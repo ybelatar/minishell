@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 16:52:56 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/13 16:18:44 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/01/30 01:49:49 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,8 @@ int						is_in_charset(char c, char *set);
 char					*get_word(char *str, int *i);
 t_pretoken				*skip_spaces(t_pretoken *pretokens);
 t_pretoken				*new_pretoken(char *content, t_pretoken_type type);
-void					update_env(char *key, char *value, t_env *env);
+void					update_env(char *key, char *value,
+							t_minishell *minishell);
 void					delete_env(char *key, t_env *env,
 							t_minishell *minishell);
 t_env					*new_env(char *key, char *value, int i);
@@ -215,7 +216,7 @@ void					clear_pretokens(t_pretoken **pretokens);
 void					clear_tokens(t_token **tokens);
 void					clear_tab(char **tab);
 void					clear_redirs(t_redir_list **redirs);
-void					clear_env(t_env **env);
+void					clear_env(t_env *env);
 void					clear_ast(t_node_ast **ast);
 void					move_def(t_pretoken **pretoken, int i);
 void					move_def_token(t_token **token, int i);

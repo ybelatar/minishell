@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 04:19:55 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/10 22:43:08 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/01/30 01:49:36 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,19 @@ void	clear_tab(char **tab)
 	free(tab);
 }
 
-void	clear_env(t_env **env)
+void	clear_env(t_env *env)
 {
 	t_env	*tmp;
 
-	if (!env || !*env)
+	if (!env)
 		return ;
-	while (*env)
+	while (env)
 	{
-		tmp = (*env)->next_env;
-		free((*env)->key);
-		free((*env)->value);
-		free(*env);
-		*env = tmp;
+		tmp = env->next_env;
+		free(env->key);
+		free(env->value);
+		free(env);
+		env = tmp;
 	}
 }
 

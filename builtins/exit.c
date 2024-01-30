@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:03 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/13 16:15:22 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/01/30 01:49:01 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 void	clear_exit(t_minishell *minishell)
 {
 	clear_ast(&minishell->ast);
-	clear_env(&(minishell->env));
-	free(minishell);
+	clear_env(minishell->env);
 }
 
 int	exit_minishell(char **tab, t_minishell *minishell)

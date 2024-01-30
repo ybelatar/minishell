@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pibosc <pibosc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:45:56 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/13 22:52:37 by pibosc           ###   ########.fr       */
+/*   Updated: 2024/01/30 01:43:40 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	cd(char **args, t_minishell *minishell)
 				*args, strerror(errno)), 1);
 	if (!getcwd(tmp1, 2048))
 		return (1);
-	update_env("OLDPWD", tmp, minishell->env);
-	update_env("PWD", getcwd(tmp, 2048), minishell->env);
+	update_env("OLDPWD", tmp, minishell);
+	update_env("PWD", getcwd(tmp, 2048), minishell);
 	return (0);
 }
 

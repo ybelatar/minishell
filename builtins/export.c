@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:07 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/10 23:49:39 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/01/30 01:44:34 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	export_one(char *arg, t_minishell *minishell)
 		return (0);
 	linus = ft_substr(arg, 0, ft_strchri(arg, '='));
 	boom = ft_substr(arg, ft_strchri(arg, '=') + 1, ft_strlen(arg));
-	update_env(linus, boom, minishell->env);
+	update_env(linus, boom, minishell);
 	free(linus);
 	free(boom);
 	return (0);

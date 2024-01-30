@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pibosc <pibosc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/13 23:24:08 by pibosc           ###   ########.fr       */
+/*   Updated: 2024/01/30 02:00:12 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,7 @@ int	routine(t_minishell *minishell, t_exec data)
 		signal(SIGQUIT, SIG_IGN);
 		minishell->cmd_line = readline("minishell$ ");
 		if (!minishell->cmd_line)
-			return (clear_env(&(minishell->env)),
-				free(minishell), ft_dprintf(2, "exit\n"), 0);
+			return (clear_env(minishell->env), ft_dprintf(2, "exit\n"), 0);
 		if (!minishell->cmd_line || !*minishell->cmd_line)
 			continue ;
 		if (*minishell->cmd_line)
@@ -181,17 +180,17 @@ int	routine(t_minishell *minishell, t_exec data)
 
 int	main(int ac, char **av, char **env)
 {
-	t_minishell	*minishell;
+	t_minishell	minishell;
 	t_exec		data;
 
 	(void)ac;
 	(void)av;
-	minishell = malloc(sizeof(t_minishell));
-	if (!minishell)
-		return (1);
-	minishell->env = copy_env(env);
+	// minishell = malloc(sizeof(t_minishell));
+	// if (!minishell)
+	// 	return (1);
+	minishell.env = copy_env(env);
 	data.is_here_doc = 0;
-	init_data(&data, minishell->env);
-	routine(minishell, data);
+	init_data(&data, minishell.env);
+	routine(&minishell, data);
 	return (0);
 }

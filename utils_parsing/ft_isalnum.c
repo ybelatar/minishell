@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:29:24 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/10 22:49:52 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/01/30 01:30:12 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,26 @@ int	ft_isatoi_utils(int c)
 
 int	ft_isatoi(char *str)
 {
-	int	i;
+	size_t	i;
+	int		sign;
 
-	if (!str)
-		return (0);
+	sign = 1;
 	i = 0;
-	while (str[i])
+	if (*str == '-')
 	{
-		if (!ft_isatoi_utils(str[i]))
-			return (0);
-		i++;
+		sign = -sign;
+		++str;
 	}
+	else if (*str == '+')
+		++str;
+	while (*str >= '0' && *str <= '9')
+	{
+		i = i * 10 + *str - '0';
+		if ((i > LONG_MAX && sign == 1) || (i - 1 > LONG_MAX && sign == -1))
+			return (0);
+		++str;
+	}
+	if (*str)
+		return (0);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:23 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/13 22:34:03 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/01/30 01:58:55 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,16 @@ char	*get_env(char *key, t_env *env)
 	return (NULL);
 }
 
-void	update_env(char *key, char *value, t_env *env)
+void	update_env(char *key, char *value, t_minishell *minishell)
 {
-	if (!env)
-		env = new_env(key, ft_strdup(value), 0);
+	t_env	*env;
+
+	if (!minishell->env)
+	{
+		minishell->env = new_env(ft_strdup(key), ft_strdup(value), 0);
+		return ;
+	}
+	env = minishell->env;
 	while (env)
 	{
 		if (!ft_strcmp(env->key, key))
