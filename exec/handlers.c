@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:03:41 by pibosc            #+#    #+#             */
-/*   Updated: 2024/01/30 02:04:40 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/01 20:42:22 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	handle_nocmd_heredoc(t_exec *data, t_minishell *minishell)
 		free_heredoc(heredoc);
 		clear_ast(&minishell->ast);
 		clear_env(minishell->env);
+		rl_clear_history();
+		ft_close(minishell->of);
 		exit(0);
 	}
 	g_status = 0;

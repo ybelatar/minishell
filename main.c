@@ -6,13 +6,13 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/30 02:00:12 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/01 20:42:07 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
 #include "exec.h"
 #include "minishell.h"
+#include "parsing.h"
 
 // void	display_pretokens(t_pretoken *pretoken)
 // {
@@ -143,8 +143,8 @@ t_env	*copy_env(char **env)
 	i = 0;
 	while (env[i])
 	{
-		env_add_back(&cpy, new_env(ft_substr(env[i],
-					0, ft_strchri(env[i], '=')), NULL, 1));
+		env_add_back(&cpy, new_env(ft_substr(env[i], 0, ft_strchri(env[i],
+						'=')), NULL, 1));
 		i++;
 	}
 	return (cpy);
@@ -154,11 +154,10 @@ int	routine(t_minishell *minishell, t_exec data)
 {
 	while (1)
 	{
-		signal(SIGINT, sig_handler);
-		signal(SIGQUIT, SIG_IGN);
-		minishell->cmd_line = readline("minishell$ ");
+		ft_prompt(minishell);
 		if (!minishell->cmd_line)
-			return (clear_env(minishell->env), ft_dprintf(2, "exit\n"), 0);
+			return (ft_close(minishell->of), clear_env(minishell->env),
+				ft_dprintf(2, "exit\n"), 0);
 		if (!minishell->cmd_line || !*minishell->cmd_line)
 			continue ;
 		if (*minishell->cmd_line)
@@ -173,8 +172,10 @@ int	routine(t_minishell *minishell, t_exec data)
 			continue ;
 		(init_data(&data, minishell->env), data.is_here_doc = 0);
 		exec(minishell->ast, &data, minishell);
+		ft_close(minishell->of);
 		close_pipes(&data);
 		clear_ast(&(minishell->ast));
+		free(minishell->cmd_line);
 	}
 }
 
@@ -185,10 +186,8 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	// minishell = malloc(sizeof(t_minishell));
-	// if (!minishell)
-	// 	return (1);
 	minishell.env = copy_env(env);
+	minishell.of = -1;
 	data.is_here_doc = 0;
 	init_data(&data, minishell.env);
 	routine(&minishell, data);

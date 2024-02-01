@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 16:52:56 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/30 01:49:49 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/01 20:41:56 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,13 @@ typedef struct s_env
 typedef struct s_minishell
 {
 	char				*cmd_line;
+	char				*prompt;
 	t_env				*env;
 	t_pretoken			*pretokens;
 	t_token				*tokens;
 	t_node_ast			*ast;
 	int					exit_status;
+	int					of;
 }						t_minishell;
 
 /*Parser*/
@@ -189,6 +191,7 @@ int						check_and(char *str);
 int						check_quotes(char *str);
 char					**sort_tab(char **tab);
 int						plen(char **map);
+void					ft_prompt(t_minishell *minishell);
 
 /*Libft functions*/
 char					*ft_strchr(char *s, char c);

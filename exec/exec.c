@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 18:13:06 by pibosc            #+#    #+#             */
-/*   Updated: 2024/01/30 01:18:35 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/01 20:42:09 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	exec_builtin(char **args, t_minishell *minishell, t_exec *data)
 	if (data->is_pipe)
 	{
 		clear_ast(&minishell->ast);
-		clear_env(&minishell->env);
+		clear_env(minishell->env);
 	}
 	return (g_status);
 }
@@ -72,5 +72,6 @@ int	exec(t_node_ast *ast, t_exec *exec, t_minishell *minishell)
 	init_jump_table(&exec_fct);
 	exec_fct[ast->type](ast, exec, minishell);
 	wait_commands(exec);
+	dup2(minishell->of, 1);
 	return (0);
 }

@@ -6,16 +6,19 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:03 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/30 01:49:01 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/01 20:42:20 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include "exec.h"
 
 void	clear_exit(t_minishell *minishell)
 {
 	clear_ast(&minishell->ast);
 	clear_env(minishell->env);
+	ft_close(minishell->of);
+	rl_clear_history();
 }
 
 int	exit_minishell(char **tab, t_minishell *minishell)

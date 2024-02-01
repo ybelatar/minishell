@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pibosc <pibosc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 22:21:46 by pibosc            #+#    #+#             */
-/*   Updated: 2024/01/13 23:35:55 by pibosc           ###   ########.fr       */
+/*   Updated: 2024/02/01 20:17:20 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ int	get_outfile(t_redir_list *redir, char **outfile)
 	}
 	if (*outfile)
 	{
-		fd = open(*outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (is_append)
+			fd = open(*outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else
+			fd = open(*outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		dup2(fd, 1);
 		ft_close(fd);
 	}
 	return (is_append);

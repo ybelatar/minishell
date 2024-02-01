@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pibosc <pibosc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:40:45 by pibosc            #+#    #+#             */
-/*   Updated: 2024/01/13 21:29:05 by pibosc           ###   ########.fr       */
+/*   Updated: 2024/02/01 19:27:36 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	sig_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
+		g_status = 130;
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		printf("\n");

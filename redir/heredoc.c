@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pibosc <pibosc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:29:13 by pibosc            #+#    #+#             */
-/*   Updated: 2024/01/13 23:36:59 by pibosc           ###   ########.fr       */
+/*   Updated: 2024/02/01 20:42:53 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	read_here_doc(t_hered **here_doc, t_exec *data, t_minishell *minishell)
 (wanted `%s`)\n", data->limiter), 0);
 		if (!ft_strcmp(line, data->limiter))
 			return (free(line), 1);
-		line = ft_strjoin(line, "\n");
+		line = ft_strjoin_free(line, "\n");
 		if (!minishell)
 			line = expanded_heredoc(line, minishell);
 		if (!ft_lstpush_back(here_doc, line))
@@ -64,8 +64,8 @@ t_minishell *ms, int ignore_fork)
 	if (!ignore_fork)
 	{
 		clear_ast(&ms->ast);
-		clear_env(&ms->env);
-		free(ms);
+		clear_env(ms->env);
+		ft_close(ms->of);
 		exit(EXIT_SUCCESS);
 	}
 }
@@ -75,6 +75,7 @@ int	init_heredoc(t_exec *data, t_minishell *minishell, int ignore_fork)
 	t_hered		*heredoc;
 	pid_t		child_pid;
 
+	dup2(minishell->of, 1);
 	child_pid = -1;
 	if (pipe(data->pipe) == -1)
 		return (perror("pipe"), 0);

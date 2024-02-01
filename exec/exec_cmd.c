@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 19:13:00 by pibosc            #+#    #+#             */
-/*   Updated: 2024/01/30 02:06:36 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/01 20:41:50 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ void	child_fds(t_exec *data, t_minishell *minishell)
 		if (data->pipe[0] != -1)
 			ft_close(data->pipe[0]);
 	}
+	ft_close(3);
+	ft_close(4);
+	ft_close(5);
 }
 
 static inline void	sig_fork(t_exec *data)
@@ -74,23 +77,23 @@ static inline void	sig_fork(t_exec *data)
 	data->pid = fork();
 }
 
-int	exec_cmd(t_node_ast *node, t_exec *data, t_minishell *minishell)
+int	exec_cmd(t_node_ast *node, t_exec *data, t_minishell *ms)
 {
 	char	**env_tab;
 
-	if (precheck(node, data, minishell))
+	if (precheck(node, data, ms))
 		return (EXIT_FAILURE);
 	sig_fork(data);
 	if (data->pid == -1)
 		return (EXIT_FAILURE);
 	if (data->pid == 0)
 	{
-		child_fds(data, minishell);
+		child_fds(data, ms);
 		if (!data->is_pipe)
 			ft_close(data->pipe[1]);
 		env_tab = tab_env(data->env);
 		execve(node->args[0], node->args, env_tab);
-		(free_tab_2d(env_tab), exit(data->ret_value));
+		(ft_close(ms->of), free_tab_2d(env_tab), exit(data->ret_value));
 	}
 	else
 	{
@@ -98,7 +101,7 @@ int	exec_cmd(t_node_ast *node, t_exec *data, t_minishell *minishell)
 			ft_close(data->pipe[1]);
 		else
 			data->fd_in = data->pipe[0];
-		data->fd_out = STDOUT_FILENO;
+		ft_close_fd(data);
 		return (g_status);
 	}
 }
