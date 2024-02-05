@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   automate2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:24:22 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/10 22:48:48 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 void	syntax_error(t_pretoken *pretoken)
 {

@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:40:45 by pibosc            #+#    #+#             */
-/*   Updated: 2024/02/01 19:27:36 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:42:48 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	heredoc_sig_handler(int sig)
 		rl_replace_line("", 0);
 		ft_dprintf(STDERR_FILENO, "\n");
 		g_status = 130;
-		garbage_collector(NULL, NULL, 1);
 		exit(g_status);
 	}
 }

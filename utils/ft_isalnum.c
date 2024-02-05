@@ -6,11 +6,11 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:29:24 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/30 01:30:12 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 int	ft_isalpha(int c)
 {

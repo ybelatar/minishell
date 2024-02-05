@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:25:43 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/02 02:46:31 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:34:49 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
+
+char	*ft_strchrr(char *s, char c)
+{
+	int	i;
+
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i])
+		++i;
+	if (i < 2)
+		return (s);
+	while (i > 0)
+	{
+		if (s[i] == c)
+			return (s + i + 1);
+		--i;
+	}
+	return (s);
+}
 
 char	*ft_strchr(char *s, char c)
 {

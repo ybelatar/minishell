@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pretoken_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:22:03 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/10 22:48:15 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 char	*get_quoted(char *str, int *i)
 {

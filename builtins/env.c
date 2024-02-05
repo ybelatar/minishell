@@ -3,17 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/06 15:46:01 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/10 22:29:45 by ybelatar         ###   ########.fr       */
+/*   Created: 2024/02/05 18:41:38 by wouhliss          #+#    #+#             */
+/*   Updated: 2024/02/05 19:38:55 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
-
-int	env(t_minishell *minishell)
-{
-	display_env(minishell->env);
-	return (0);
-}
+#include "minishell.h"

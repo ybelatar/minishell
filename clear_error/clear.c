@@ -6,11 +6,11 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 04:19:55 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/30 01:49:36 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 void	clear_pretokens(t_pretoken **pretokens)
 {

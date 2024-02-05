@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/06 15:46:12 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/10 22:36:18 by ybelatar         ###   ########.fr       */
+/*   Created: 2024/01/02 02:25:46 by ybelatar          #+#    #+#             */
+/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
-int	unset(char **args, t_minishell *minishell)
+size_t	ft_strlcpy(char *dst, char *src, size_t size)
 {
-	int	i;
+	size_t	i;
 
-	if (!args)
-		return (0);
 	i = 0;
-	while (args[i])
+	if (size <= 0)
+		return (ft_strlen(src));
+	while (src[i] && i < (size - 1))
 	{
-		delete_env(args[i], minishell->env, minishell);
+		dst[i] = src[i];
 		i++;
 	}
-	return (0);
+	dst[i] = 0;
+	while (src[i])
+		i++;
+	return (i);
 }

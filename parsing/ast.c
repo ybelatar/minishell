@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 21:00:44 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/09 05:39:47 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/05 18:10:55 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 t_node_ast	*parse_expression(t_token **tokens, int min_precedence);
 
@@ -38,6 +38,8 @@ t_node_ast	*parse_term(t_token **token)
 {
 	t_node_ast	*parsed;
 
+	if (!token)
+		return (0);
 	if ((*token)->type == OPEN_P)
 	{
 		move_def_token(token, 1);
@@ -69,6 +71,8 @@ t_node_ast	*parse_expression(t_token **tokens, int min_precedence)
 	t_node_ast		*right_node;
 	t_token_type	ope_type;
 
+	if (!tokens)
+		return (0);
 	left_node = parse_term(tokens);
 	if (!left_node)
 		return (NULL);
@@ -91,6 +95,8 @@ t_node_ast	*parser(t_token *tokens)
 {
 	t_node_ast	*ast;
 
+	if (!tokens)
+		return (0);
 	ast = parse_expression(&tokens, 0);
 	if (!ast)
 		return (clear_tokens(&tokens), NULL);

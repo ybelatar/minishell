@@ -6,11 +6,10 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:27:07 by pibosc            #+#    #+#             */
-/*   Updated: 2024/02/01 20:42:40 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:38:50 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
 #include "minishell.h"
 
 // int	ft_strncmp(const char *s1, const char *s2, size_t n)
@@ -38,30 +37,47 @@ int	ft_putstr_fd(char *s, int fd)
 	return (ft_strlen(s));
 }
 
+void	ft_close(int fd)
+{
+	if (fd > 2)
+		close(fd);
+}
+
+char	*get_env(char *key, t_env *env)
+{
+	t_env	*current;
+
+	current = env;
+	while (current)
+	{
+		if (!ft_strcmp(current->key, key))
+			return (current->value);
+		current = current->next_env;
+	}
+	return (0);
+}
+
 void	ft_prompt(t_minishell *minishell)
 {
 	char	*cwd;
 
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
-	minishell->of = dup(1);
 	cwd = getcwd(0, 0);
 	if (cwd)
 	{
-		minishell->prompt = ft_strjoin_free2(ft_strdup("\e[1;96m"), cwd);
+		if (g_status)
+			minishell->prompt = ft_strjoin("\e[1;91m➜ \e[1;96m", ft_strchrr(cwd,
+						'/'));
+		else
+			minishell->prompt = ft_strjoin("\e[1;92m➜ \e[1;96m", ft_strchrr(cwd,
+						'/'));
+		free(cwd);
 		minishell->prompt = ft_strjoin_free(minishell->prompt, "\e[0m ");
-		minishell->cmd_line = readline(minishell->prompt);
-		free(minishell->prompt);
+		return ;
 	}
+	if (g_status)
+		minishell->prompt = ft_strjoin("\e[1;91m➜ \e[1;96m",
+				"Minishell\e[0m$ ");
 	else
-		minishell->cmd_line = readline("\e[1;96mMinishell\e[0m$ ");
-}
-
-void	ft_close_fd(t_exec *data)
-{
-	if (data->fd_out != STDOUT_FILENO)
-	{
-		ft_close(data->fd_out);
-		data->fd_out = STDOUT_FILENO;
-	}
+		minishell->prompt = ft_strjoin("\e[1;92m➜ \e[1;96m",
+				"Minishell\e[0m$ ");
 }

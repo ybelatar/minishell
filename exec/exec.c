@@ -5,73 +5,55 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/26 18:13:06 by pibosc            #+#    #+#             */
-/*   Updated: 2024/02/01 20:42:09 by wouhliss         ###   ########.fr       */
+/*   Created: 2024/02/05 18:57:35 by wouhliss          #+#    #+#             */
+/*   Updated: 2024/02/05 19:37:38 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "minishell.h"
 
-int	g_status;
-
-int	is_builtin(char *cmd)
+static void	ft_print_redirs(t_node_ast *ast)
 {
-	if (ft_strcmp(cmd, "echo") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "cd") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "pwd") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "export") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "unset") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "env") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "exit") == 0)
-		return (1);
-	return (0);
-}
+	t_redir_list	*current;
 
-int	exec_builtin(char **args, t_minishell *minishell, t_exec *data)
-{
-	if (ft_strcmp(args[0], "echo") == 0)
-		g_status = echo(args + 1);
-	else if (ft_strcmp(args[0], "cd") == 0)
-		g_status = cd(args + 1, minishell);
-	else if (ft_strcmp(args[0], "pwd") == 0)
-		g_status = pwd(args + 1, minishell);
-	else if (ft_strcmp(args[0], "export") == 0)
-		g_status = export(args + 1, minishell);
-	else if (ft_strcmp(args[0], "unset") == 0)
-		g_status = unset(args + 1, minishell);
-	else if (ft_strcmp(args[0], "env") == 0)
-		g_status = env(minishell);
-	else if (ft_strcmp(args[0], "exit") == 0)
-		g_status = exit_minishell(args + 1, minishell);
-	if (data->is_pipe)
+	if (!ast)
+		return ;
+	current = ast->redirs;
+	while (current)
 	{
-		clear_ast(&minishell->ast);
-		clear_env(minishell->env);
+		printf("redir = file : %s type : %d\n", current->file, current->type);
+		current = current->next_redir;
 	}
-	return (g_status);
 }
 
-void	init_jump_table(t_fct_ptr (*exec_fct)[4])
+static void	ft_print_type(t_node_ast *ast)
 {
-	(*exec_fct)[T_CMD] = &exec_cmd;
-	(*exec_fct)[T_PIPE] = &exec_master_pipe;
-	(*exec_fct)[T_OR] = &exec_and;
-	(*exec_fct)[T_AND] = &exec_or;
+	if (!ast)
+		return ;
+	printf("type = %d\n", ast->type);
 }
 
-int	exec(t_node_ast *ast, t_exec *exec, t_minishell *minishell)
+static void	ft_print_args(t_node_ast *ast)
 {
-	t_fct_ptr	exec_fct[4];
+	char	**s;
 
-	init_jump_table(&exec_fct);
-	exec_fct[ast->type](ast, exec, minishell);
-	wait_commands(exec);
-	dup2(minishell->of, 1);
-	return (0);
+	if (!ast)
+		return ;
+	if (!ast->args)
+		return ;
+	s = ast->args;
+	while (*s)
+		printf("arg = %s\n", *(s++));
+}
+
+void	ft_exec(t_node_ast *current)
+{
+	if (!current)
+		return ;
+	ft_print_type(current);
+	ft_print_args(current);
+	ft_print_redirs(current);
+	printf("\n====================\n");
+	ft_exec(current->left_child);
+	ft_exec(current->right_child);
 }

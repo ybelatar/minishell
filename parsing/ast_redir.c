@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast_redir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 21:37:04 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/05 15:16:30 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:49:49 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 t_redir_type	get_redir_type(t_token_type type)
 {

@@ -6,13 +6,11 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/01 20:42:07 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:08:50 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
 #include "minishell.h"
-#include "parsing.h"
 
 // void	display_pretokens(t_pretoken *pretoken)
 // {
@@ -99,6 +97,8 @@
 // 	printf("\n");
 // }
 
+int		g_status;
+
 t_env	*new_env(char *key, char *value, int i)
 {
 	t_env	*new;
@@ -150,46 +150,39 @@ t_env	*copy_env(char **env)
 	return (cpy);
 }
 
-int	routine(t_minishell *minishell, t_exec data)
+int	routine(t_minishell *minishell)
 {
 	while (1)
 	{
+		signal(SIGINT, sig_handler);
+		signal(SIGQUIT, SIG_IGN);
+		minishell->of = dup(1);
 		ft_prompt(minishell);
+		minishell->cmd_line = readline(minishell->prompt);
+		free(minishell->prompt);
+		minishell->prompt = 0;
 		if (!minishell->cmd_line)
 			return (ft_close(minishell->of), clear_env(minishell->env),
 				ft_dprintf(2, "exit\n"), 0);
-		if (!minishell->cmd_line || !*minishell->cmd_line)
-			continue ;
-		if (*minishell->cmd_line)
-			add_history(minishell->cmd_line);
+		add_history(minishell->cmd_line);
 		minishell->pretokens = pretokenization(minishell->cmd_line);
+		free(minishell->cmd_line);
 		expand_pretokens(minishell->pretokens, minishell);
 		minishell->tokens = tokenization(minishell->pretokens);
-		if (!minishell->tokens)
-			continue ;
 		minishell->ast = parser(minishell->tokens);
-		if (!minishell->tokens)
-			continue ;
-		(init_data(&data, minishell->env), data.is_here_doc = 0);
-		exec(minishell->ast, &data, minishell);
+		ft_exec(minishell->ast);
 		ft_close(minishell->of);
-		close_pipes(&data);
 		clear_ast(&(minishell->ast));
-		free(minishell->cmd_line);
 	}
 }
 
 int	main(int ac, char **av, char **env)
 {
 	t_minishell	minishell;
-	t_exec		data;
 
 	(void)ac;
 	(void)av;
-	minishell.env = copy_env(env);
-	minishell.of = -1;
-	data.is_here_doc = 0;
-	init_data(&data, minishell.env);
-	routine(&minishell, data);
-	return (0);
+	minishell = (t_minishell){0, 0, copy_env(env), 0, 0, 0, 0, -1};
+	routine(&minishell);
+	return (g_status);
 }
