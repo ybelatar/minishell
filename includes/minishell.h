@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:49 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/06 21:31:32 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 22:15:34 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 extern int				g_status;
 
 void					sig_handler(int sig);
-void					fork_sig_handler(int sig);	
+void					fork_sig_handler(int sig);
 void					heredoc_sig_handler(int sig);
 
 typedef enum e_pretoken_type
@@ -126,6 +126,7 @@ typedef struct s_minishell
 	int					exit_status;
 	int					in;
 	int					out;
+	t_pid_list			*pid_list;
 }						t_minishell;
 
 typedef struct s_cmd
@@ -143,6 +144,12 @@ typedef struct s_heredoc
 	char				rand[33];
 }						t_heredoc;
 
+typedef struct s_pid_list
+{
+	int					pid;
+	struct s_pid_list	*next;
+}						t_pid_list;
+
 /*Parser*/
 
 t_node_ast				*parser(t_token *tokens);
@@ -155,6 +162,8 @@ int						ft_open_redirs(t_minishell *minishell, t_cmd *cmd,
 void					ft_read(const char *limiter, int out);
 int						ft_read_heredoc(t_heredoc *heredoc,
 							const char *limiter);
+t_pid_list				*add_pid_list(t_pid_list *list, int pid);
+void					clear_pid(t_pid_list *list);
 
 /*Token builders*/
 
