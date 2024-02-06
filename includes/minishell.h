@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:49 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/06 15:39:55 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:31:32 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 # define REDIR_HEREDOC -42
@@ -32,6 +33,8 @@
 extern int				g_status;
 
 void					sig_handler(int sig);
+void					fork_sig_handler(int sig);	
+void					heredoc_sig_handler(int sig);
 
 typedef enum e_pretoken_type
 {
@@ -121,13 +124,15 @@ typedef struct s_minishell
 	t_token				*tokens;
 	t_node_ast			*ast;
 	int					exit_status;
-	int					of;
+	int					in;
+	int					out;
 }						t_minishell;
 
 typedef struct s_cmd
 {
 	int					fd_in;
 	int					fd_out;
+	int					pid;
 }						t_cmd;
 
 typedef struct s_heredoc
@@ -148,6 +153,8 @@ void					ft_exec(t_minishell *minishell);
 int						ft_open_redirs(t_minishell *minishell, t_cmd *cmd,
 							t_redir_list *redirs);
 void					ft_read(const char *limiter, int out);
+int						ft_read_heredoc(t_heredoc *heredoc,
+							const char *limiter);
 
 /*Token builders*/
 

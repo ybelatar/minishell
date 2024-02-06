@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:57:35 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/06 14:55:39 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:55:24 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,41 @@
 // 	ft_print_ast(ast->right_child);
 // }
 
+static inline void	sig_fork(t_cmd *cmd)
+{
+	signal(SIGINT, fork_sig_handler);
+	signal(SIGQUIT, fork_sig_handler);
+	cmd->pid = fork();
+}
+
 static void	ft_exec_cmd(t_minishell *minishell, t_node_ast *ast)
 {
 	t_cmd	cmd;
 
-	cmd = (t_cmd){-1, -1};
+	//ft_expand(ast);
+	cmd = (t_cmd){0, 1, -1};
 	if (ft_open_redirs(minishell, &cmd, ast->redirs))
 		return ;
+	sig_fork(&cmd);
+	if (cmd.pid < 0)
+	{
+		ft_dprintf(2, "minishell: %s\n", strerror(errno));
+		return ;
+	}
+	if (cmd.pid == 0)
+	{
+		if (cmd.fd_in != 0)
+			dup2(cmd.fd_in, 0);
+		if (cmd.fd_out != 1)
+			dup2(cmd.fd_out, 1);
+		ft_close(minishell->in);
+		ft_close(minishell->out);
+		execve(ast->args[0], ast->args, 0);
+		ft_dprintf(2, "%s: %s\n", ast->args[0], strerror(errno));
+		clear_ast(&ast);
+		clear_env(minishell->env);
+		exit(127);
+	}
 }
 
 static void	ft_exec_pipe(t_minishell *minishell, t_node_ast *ast)

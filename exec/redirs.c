@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:16:44 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/06 14:58:05 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:17:43 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ static int	ft_handle_in(t_minishell *minishell, t_cmd *cmd,
 	fd = open(redir->file, O_RDONLY);
 	if (fd < 0)
 	{
-		ft_dprintf(2, "minishell: %s: %s\n", strerror(errno), redir->file);
+		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
 		return (-1);
 	}
+	dup2(fd, 0);
 	close(fd);
 	return (fd);
 }
@@ -39,7 +40,7 @@ static int	ft_handle_out(t_minishell *minishell, t_cmd *cmd,
 	fd = open(redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
 	{
-		ft_dprintf(2, "minishell: %s: %s\n", strerror(errno), redir->file);
+		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
 		return (-1);
 	}
 	dup2(fd, 1);
@@ -50,10 +51,16 @@ static int	ft_handle_out(t_minishell *minishell, t_cmd *cmd,
 static int	ft_handle_heredoc(t_minishell *minishell, t_cmd *cmd,
 		t_redir_list *redir)
 {
+	t_heredoc	heredoc;
+
 	(void)minishell;
 	(void)cmd;
-	(void)redir;
-	return (0);
+	heredoc.in = -1;
+	heredoc.out = -1;
+	heredoc.path = 0;
+	if (ft_read_heredoc(&heredoc, redir->file))
+		return (-1);
+	return (heredoc.in);
 }
 
 static int	ft_handle_append(t_minishell *minishell, t_cmd *cmd,
@@ -66,7 +73,7 @@ static int	ft_handle_append(t_minishell *minishell, t_cmd *cmd,
 	fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (fd < 0)
 	{
-		ft_dprintf(2, "minishell: %s: %s\n", strerror(errno), redir->file);
+		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
 		return (-1);
 	}
 	dup2(fd, 1);
@@ -75,11 +82,10 @@ static int	ft_handle_append(t_minishell *minishell, t_cmd *cmd,
 }
 
 /*	Opens all redirections from a t_redir_list linked list
- 	to check their access.*/
+	to check their access.*/
 int	ft_open_redirs(t_minishell *minishell, t_cmd *cmd, t_redir_list *redirs)
 {
 	t_redir_list	*current;
-	int				fd;
 
 	if (!minishell || !cmd)
 		return (1);
@@ -88,16 +94,15 @@ int	ft_open_redirs(t_minishell *minishell, t_cmd *cmd, t_redir_list *redirs)
 	current = redirs;
 	while (current)
 	{
-		fd = -1;
 		if (current->type == R_IN)
-			fd = ft_handle_in(minishell, cmd, current);
+			cmd->fd_in = ft_handle_in(minishell, cmd, current);
 		else if (current->type == R_OUT)
-			fd = ft_handle_out(minishell, cmd, current);
+			cmd->fd_out = ft_handle_out(minishell, cmd, current);
 		else if (current->type == R_HEREDOC)
-			fd = ft_handle_heredoc(minishell, cmd, current);
+			cmd->fd_in = ft_handle_heredoc(minishell, cmd, current);
 		else if (current->type == R_APPEND)
-			fd = ft_handle_append(minishell, cmd, current);
-		if (fd < 0)
+			cmd->fd_out = ft_handle_append(minishell, cmd, current);
+		if (cmd->fd_in < 0 || cmd->fd_out < 0)
 			return (1);
 		current = current->next_redir;
 	}

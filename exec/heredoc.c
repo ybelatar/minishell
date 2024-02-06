@@ -6,13 +6,13 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:44:00 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/06 15:41:08 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:51:36 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_get_rand(char *filename)
+static void	ft_get_rand(t_heredoc *heredoc)
 {
 	int		fd;
 	int		r;
@@ -32,38 +32,40 @@ static void	ft_get_rand(char *filename)
 		while (((buff[r] >= 'a' && buff[r] <= 'z') || (buff[r] >= 'A'
 					&& buff[r] <= 'Z') || (buff[r] >= '0' && buff[r] <= '9'))
 			&& bytes < 32 && r)
-			filename[bytes++] = buff[r--];
+			heredoc->rand[bytes++] = buff[r--];
 	}
 	close(fd);
-	filename[bytes] = 0;
+	heredoc->rand[bytes] = 0;
+	heredoc->path = heredoc->rand;
 }
 
-void	ft_read_heredoc(const char *limiter)
+int	ft_read_heredoc(t_heredoc *heredoc, const char *limiter)
 {
-	t_heredoc	heredoc;
 
-	ft_get_rand(heredoc.rand);
-	heredoc.path = ft_strjoin("/tmp/", rand);
-	if (!heredoc.path)
+	ft_get_rand(heredoc);
+	if (!heredoc->path)
 	{
-		return ;
+		ft_dprintf(2, "minishell: %s\n", strerror(errno));
+		return (1);
 	}
-	heredoc.out = open(heredoc.path, O_CREAT, O_WRONLY, O_TRUNC, 0644);
-	if (heredoc.out < 0)
+	ft_dprintf(2, "%s\n", heredoc->path);
+	heredoc->out = open(heredoc->path, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if (heredoc->out < 0)
 	{
-		free(heredoc.path);
-		return ;
+		ft_dprintf(2, "minishell: %s\n", strerror(errno));
+		free(heredoc->path);
+		return (1);
 	}
-	heredoc.in = open(heredoc.path, O_RDONLY);
-	if (heredoc.in < 0)
+	heredoc->in = open(heredoc->path, O_RDONLY);
+	if (heredoc->in < 0)
 	{
-		free(heredoc.path);
-		close(heredoc.out);
-		return ;
+		ft_dprintf(2, "minishell: %s\n", strerror(errno));
+		close(heredoc->out);
+		return (1);
 	}
-	unlink(heredoc.path);
-	free(heredoc.path);
-	ft_read(limiter, heredoc.out);
+	unlink(heredoc->path);
+	ft_read(limiter, heredoc->out);
+	return (0);
 }
 
 // void	ft_print_rand(void)

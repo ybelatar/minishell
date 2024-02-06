@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/06 15:14:54 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:20:48 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,24 +156,26 @@ int	routine(t_minishell *minishell)
 	{
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, SIG_IGN);
-		minishell->of = dup(1);
-		ft_print_rand();
+		minishell->in = dup(0);
+		minishell->out = dup(1);
 		ft_prompt(minishell);
 		minishell->cmd_line = readline(minishell->prompt);
 		free(minishell->prompt);
 		minishell->prompt = 0;
 		if (!minishell->cmd_line)
-			return (ft_close(minishell->of), clear_env(minishell->env),
-				ft_dprintf(2, "exit\n"), 0);
+			return (ft_close(minishell->in), ft_close(minishell->out),
+				clear_env(minishell->env), ft_dprintf(2, "exit\n"), 0);
 		add_history(minishell->cmd_line);
 		minishell->pretokens = pretokenization(minishell->cmd_line);
 		free(minishell->cmd_line);
-		expand_pretokens(minishell->pretokens, minishell);
+		//expand_pretokens(minishell->pretokens, minishell);
 		minishell->tokens = tokenization(minishell->pretokens);
 		minishell->ast = parser(minishell->tokens);
 		ft_exec(minishell);
-		dup2(minishell->of, 1);
-		ft_close(minishell->of);
+		dup2(minishell->out, 1);
+		ft_close(minishell->out);
+		dup2(minishell->in, 0);
+		ft_close(minishell->in);
 		clear_ast(&(minishell->ast));
 	}
 }
@@ -184,7 +186,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	minishell = (t_minishell){0, 0, copy_env(env), 0, 0, 0, 0, -1};
+	minishell = (t_minishell){0, 0, copy_env(env), 0, 0, 0, 0, -1, -1};
 	routine(&minishell);
 	return (g_status);
 }
