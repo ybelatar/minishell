@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:27:07 by pibosc            #+#    #+#             */
-/*   Updated: 2024/02/05 19:38:50 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:57:47 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ char	*get_env(char *key, t_env *env)
 	return (0);
 }
 
+/*	Creates a prompt from the last exit code and the current working directory.
+	Takes a pointer to a t_minishell struct to set its prompt variable.
+	The prompt is allocated so it needs to be freed after its use.*/
 void	ft_prompt(t_minishell *minishell)
 {
 	char	*cwd;

@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/05 19:08:50 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:31:35 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,8 @@ int	routine(t_minishell *minishell)
 		expand_pretokens(minishell->pretokens, minishell);
 		minishell->tokens = tokenization(minishell->pretokens);
 		minishell->ast = parser(minishell->tokens);
-		ft_exec(minishell->ast);
+		ft_exec(minishell);
+		dup2(minishell->of, 1);
 		ft_close(minishell->of);
 		clear_ast(&(minishell->ast));
 	}
