@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/06 14:31:35 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:14:54 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ int	routine(t_minishell *minishell)
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, SIG_IGN);
 		minishell->of = dup(1);
+		ft_print_rand();
 		ft_prompt(minishell);
 		minishell->cmd_line = readline(minishell->prompt);
 		free(minishell->prompt);

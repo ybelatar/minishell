@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:49 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/06 14:50:53 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:39:55 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,14 @@ typedef struct s_cmd
 	int					fd_out;
 }						t_cmd;
 
+typedef struct s_heredoc
+{
+	int					in;
+	int					out;
+	char				*path;
+	char				rand[33];
+}						t_heredoc;
+
 /*Parser*/
 
 t_node_ast				*parser(t_token *tokens);
@@ -139,6 +147,7 @@ t_node_ast				*parser(t_token *tokens);
 void					ft_exec(t_minishell *minishell);
 int						ft_open_redirs(t_minishell *minishell, t_cmd *cmd,
 							t_redir_list *redirs);
+void					ft_read(const char *limiter, int out);
 
 /*Token builders*/
 
@@ -240,7 +249,7 @@ char					*ft_strjoin_free(char *s1, char *s2);
 char					*ft_substr(char *s, unsigned int start, size_t len);
 char					*ft_substr_free(char *s, unsigned int start,
 							size_t len);
-int						ft_strlen(char *str);
+int						ft_strlen(const char *str);
 int						ft_isalnum(int c);
 int						ft_strcmp(const char *s1, const char *s2);
 void					*ft_calloc(size_t nmemb, size_t size);
@@ -267,5 +276,6 @@ void					move_def_token(t_token **token, int i);
 
 void					display_tab(char **tab);
 void					display_pretokens(t_pretoken *pretoken);
+void					ft_print_rand(void);
 
 #endif

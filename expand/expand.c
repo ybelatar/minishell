@@ -6,22 +6,22 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 17:36:27 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:25:10 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strlen(char *str)
+int	ft_strlen(const char *str)
 {
-	int	i;
+	const char	*s;
 
 	if (!str)
 		return (0);
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	s = str;
+	while (*s)
+		++s;
+	return (s - str);
 }
 
 char	*rm_quotes(char *str)
