@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:57:35 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/07 06:19:40 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/07 07:01:12 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,10 +199,10 @@ static void	ft_wait(t_minishell *minishell)
 	current = minishell->pid_list;
 	while (current)
 	{
-		waitpid(current->pid, &status, WUNTRACED);
+		waitpid(current->pid, &status, 0);
 		current = current->next;
 	}
-	g_status = status;
+	g_status = WEXITSTATUS(status);
 	clear_pid(minishell);
 }
 
@@ -220,5 +220,6 @@ void	ft_exec(t_minishell *minishell)
 		return ;
 	cmd = (t_cmd){0, 1, -1};
 	exec_fct[minishell->ast->type](minishell, minishell->ast, &cmd);
-	ft_wait(minishell);
+	if (minishell->pid_list)
+		ft_wait(minishell);
 }
