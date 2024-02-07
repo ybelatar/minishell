@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:29:24 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/07 05:22:04 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ int	ft_isalpha(int c)
 		return (1);
 	return (0);
 }
+
+int ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+} 
 
 int	ft_isalnum(int c)
 {

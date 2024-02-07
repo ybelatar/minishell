@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:49 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 01:01:30 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/07 05:45:33 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,25 +183,11 @@ void					syntax_error(t_pretoken *pretoken);
 
 /*Expand functions*/
 
-char					*rm_quotes(char *str);
-void					expand_env(t_pretoken *pretoken,
-							t_minishell *minishell);
-void					expand_env_dq(t_pretoken *pretoken,
-							t_minishell *minishell);
-void					expand_wildcard(t_pretoken *pretoken);
-void					expand_pretokens(t_pretoken *pretokens,
-							t_minishell *minishell);
 char					*get_env(char *key, t_env *env);
-int						has_whitespace(char *str);
-t_pretoken				*added_whitespace(t_pretoken *pretoken);
-void					add_first_one(t_pretoken *pretoken, char **splitted,
-							int *i);
-void					split_expand(char *res, t_pretoken *pretoken);
-int						is_emptyquote_next(t_pretoken *pretoken);
-char					*get_name(char *str, int *ptr_i);
-char					*get_name_dq(char *str, int *ptr_i);
-void					a(int *i, int *j);
-int						get_len(char *str, int i);
+char					*double_quote(char *str, int *i,
+							t_minishell *minishell);
+char					*variable_env(char *str, int *i,
+							t_minishell *minishell);
 
 /*Redirections*/
 
@@ -268,7 +254,7 @@ char					*ft_strjoin_free(char *s1, char *s2);
 char					*ft_substr(char *s, unsigned int start, size_t len);
 char					*ft_substr_free(char *s, unsigned int start,
 							size_t len);
-int						ft_strlen(const char *str);
+int						ft_strlen(char *str);
 int						ft_isalnum(int c);
 int						ft_strcmp(const char *s1, const char *s2);
 void					*ft_calloc(size_t nmemb, size_t size);
@@ -279,6 +265,7 @@ int						ft_strncmp(const char *s1, const char *s2, size_t n);
 int						ft_isalpha(int c);
 void					*ft_memset(void *s, int c, size_t n);
 char					*ft_strjoin_free2(char *s1, char *s2);
+int						ft_isdigit(int c);
 
 /*Free and error handling functions*/
 
