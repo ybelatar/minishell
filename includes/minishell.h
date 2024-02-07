@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:49 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/06 22:15:34 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/07 01:01:30 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,12 @@ typedef struct s_env
 	struct s_env		*next_env;
 }						t_env;
 
+typedef struct s_pid_list
+{
+	int					pid;
+	struct s_pid_list	*next;
+}						t_pid_list;
+
 typedef struct s_minishell
 {
 	char				*cmd_line;
@@ -144,12 +150,6 @@ typedef struct s_heredoc
 	char				rand[33];
 }						t_heredoc;
 
-typedef struct s_pid_list
-{
-	int					pid;
-	struct s_pid_list	*next;
-}						t_pid_list;
-
 /*Parser*/
 
 t_node_ast				*parser(t_token *tokens);
@@ -163,7 +163,10 @@ void					ft_read(const char *limiter, int out);
 int						ft_read_heredoc(t_heredoc *heredoc,
 							const char *limiter);
 t_pid_list				*add_pid_list(t_pid_list *list, int pid);
-void					clear_pid(t_pid_list *list);
+void					clear_pid(t_minishell *minishell);
+char					*ft_get_bin(t_minishell *minishell, char *cmd);
+char					**ft_get_env(t_minishell *minishell);
+void					ft_free_tab(char **tab);
 
 /*Token builders*/
 

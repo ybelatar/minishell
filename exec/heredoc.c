@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:44:00 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/06 19:51:36 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/07 00:23:56 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void	ft_get_rand(t_heredoc *heredoc)
 
 int	ft_read_heredoc(t_heredoc *heredoc, const char *limiter)
 {
-
 	ft_get_rand(heredoc);
 	if (!heredoc->path)
 	{

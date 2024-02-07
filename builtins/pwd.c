@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/06 15:46:01 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 02:47:55 by wouhliss         ###   ########.fr       */
+/*   Created: 2024/01/06 15:46:09 by ybelatar          #+#    #+#             */
+/*   Updated: 2024/01/10 23:01:50 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// int	env(t_minishell *minishell)
-// {
-// 	display_env(minishell->env);
-// 	return (0);
-// }
+int	pwd(char **args, t_minishell *minishell)
+{
+	char	buf[2048];
+
+	(void)args;
+	(void)minishell;
+	if (!getcwd(buf, 2048))
+		return (ft_dprintf(2, "minishell : pwd: %s\n", strerror(errno)), 1);
+	printf("%s\n", buf);
+	return (0);
+}

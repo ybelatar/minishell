@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/06 15:46:01 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 02:47:55 by wouhliss         ###   ########.fr       */
+/*   Created: 2024/01/06 15:46:12 by ybelatar          #+#    #+#             */
+/*   Updated: 2024/02/07 02:36:48 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// int	env(t_minishell *minishell)
-// {
-// 	display_env(minishell->env);
-// 	return (0);
-// }
+int	unset(char **args, t_minishell *minishell)
+{
+	int	i;
+
+	if (!args)
+		return (0);
+	i = 0;
+	while (args[i])
+	{
+		delete_env(args[i], minishell->env, minishell);
+		i++;
+	}
+	return (0);
+}
