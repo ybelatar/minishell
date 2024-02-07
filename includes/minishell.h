@@ -6,7 +6,11 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:49 by ybelatar          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/02/07 05:45:33 by ybelatar         ###   ########.fr       */
+=======
+/*   Updated: 2024/02/07 06:02:45 by wouhliss         ###   ########.fr       */
+>>>>>>> 38f93631da9b8bc508f688bc7edaff6f7dcba81a
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +154,8 @@ typedef struct s_heredoc
 	char				rand[33];
 }						t_heredoc;
 
+typedef void			(*t_fct_ptr)(t_minishell *, t_node_ast *, t_cmd *);
+
 /*Parser*/
 
 t_node_ast				*parser(t_token *tokens);
@@ -167,6 +173,14 @@ void					clear_pid(t_minishell *minishell);
 char					*ft_get_bin(t_minishell *minishell, char *cmd);
 char					**ft_get_env(t_minishell *minishell);
 void					ft_free_tab(char **tab);
+void					ft_exec_cmd(t_minishell *minishell, t_node_ast *ast,
+							t_cmd *cmd);
+void					ft_exec_pipe(t_minishell *minishell, t_node_ast *ast,
+							t_cmd *cmd);
+void					ft_exec_or(t_minishell *minishell, t_node_ast *ast,
+							t_cmd *cmd);
+void					ft_exec_and(t_minishell *minishell, t_node_ast *ast,
+							t_cmd *cmd);
 
 /*Token builders*/
 

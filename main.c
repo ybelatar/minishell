@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 04:57:20 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/07 06:49:23 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,13 +178,12 @@ int	routine(t_minishell *minishell)
 		ft_close(minishell->in);
 		clear_ast(&(minishell->ast));
 		clear_pid(minishell);
-		clear_pid(minishell);
 	}
 }
 
 int	main(int ac, char **av, char **env)
 {
-	t_minishell	minishell;
+	t_minishell		minishell;
 
 	(void)ac;
 	(void)av;

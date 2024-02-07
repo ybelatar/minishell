@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 21:39:02 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/07 00:25:01 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/07 05:06:43 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ char	*ft_get_bin(t_minishell *minishell, char *cmd)
 	char		*path;
 	int			index;
 
+	if (!ft_strncmp(cmd, "./", 2))
+		return (0);
 	if (!path_env)
 		return (0);
 	tab = ft_split(path_env, ':');
