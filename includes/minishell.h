@@ -5,14 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/25 14:54:49 by ybelatar          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/02/07 05:45:33 by ybelatar         ###   ########.fr       */
-=======
-/*   Updated: 2024/02/07 06:02:45 by wouhliss         ###   ########.fr       */
->>>>>>> 38f93631da9b8bc508f688bc7edaff6f7dcba81a
+/*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
+/*   Updated: 2024/02/07 06:51:53 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
