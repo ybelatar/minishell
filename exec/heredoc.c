@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:44:00 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/07 00:23:56 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 08:40:57 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_read_heredoc(t_heredoc *heredoc, const char *limiter)
 		return (1);
 	}
 	ft_dprintf(2, "%s\n", heredoc->path);
-	heredoc->out = open(heredoc->path, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	heredoc->out = open(heredoc->path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (heredoc->out < 0)
 	{
 		ft_dprintf(2, "minishell: %s\n", strerror(errno));

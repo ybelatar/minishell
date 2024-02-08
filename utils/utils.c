@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:27:07 by pibosc            #+#    #+#             */
-/*   Updated: 2024/02/07 19:15:36 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 07:32:38 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ char	*get_env(char *key, t_env *env)
 		current = current->next_env;
 	}
 	return (0);
+}
+
+char	ft_get_last_char(const char *str)
+{
+	while (*(str) && *(str + 1))
+		++str;
+	return (*str);
 }
 
 /*	Creates a prompt from the last exit code and the current working directory.

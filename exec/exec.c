@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:57:35 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/08 05:53:14 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 08:50:51 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,14 @@ static inline int	ft_handle_err(t_node_ast *ast)
 	if (!access(ast->args[0], F_OK) && access(ast->args[0], X_OK))
 		return (ft_dprintf(2, "minishell: %s: %s\n", ast->args[0],
 				strerror(errno)), 126);
-	else if (!ft_strncmp(ast->args[0], "./", 2) && access(ast->args[0], F_OK))
+	else if ((!ft_strncmp(ast->args[0], "./", 2)
+			|| ft_get_last_char(ast->args[0]) == '/') && access(ast->args[0],
+			F_OK))
 		return (ft_dprintf(2, "minishell: %s: %s\n", ast->args[0],
 				strerror(errno)), 127);
-	else if (!access(ast->args[0], F_OK) && S_ISDIR(path_stat.st_mode))
+	else if (!access(ast->args[0], F_OK) && (!ft_strncmp(ast->args[0], "./", 2)
+			|| ft_get_last_char(ast->args[0]) == '/')
+		&& S_ISDIR(path_stat.st_mode))
 		return (ft_dprintf(2, "minishell: %s: %s\n", ast->args[0],
 				"Is a directory"), 126);
 	else if (ft_strncmp(ast->args[0], "./", 2))
@@ -97,11 +101,16 @@ static inline void	ft_child(t_minishell *minishell, t_node_ast *ast,
 	// ft_close(minishell->in);
 	// ft_close(minishell->out);
 	env = ft_get_env(minishell);
-	execve(ast->args[0], ast->args, env);
-	bin = ft_get_bin(minishell, ast->args[0]);
-	if (bin)
-		execve(bin, ast->args, env);
-	status = ft_handle_err(ast);
+	bin = 0;
+	status = 0;
+	if (ast->args)
+	{
+		execve(ast->args[0], ast->args, env);
+		bin = ft_get_bin(minishell, ast->args[0]);
+		if (bin)
+			execve(bin, ast->args, env);
+		status = ft_handle_err(ast);
+	}
 	clear_ast(&minishell->ast);
 	clear_env(minishell->env);
 	clear_pid(minishell);
@@ -255,9 +264,18 @@ static void	ft_wait(t_minishell *minishell)
 	while (current)
 	{
 		waitpid(current->pid, &status, 0);
+		if (WIFEXITED(status))
+			g_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGQUIT)
+			{
+				ft_dprintf(2, "Quit (core dumped)\n");
+				g_status = 131;
+			}
+		}
 		current = current->next;
 	}
-	g_status = WEXITSTATUS(status);
 	clear_pid(minishell);
 }
 

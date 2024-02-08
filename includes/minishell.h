@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 23:41:56 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 07:32:48 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ t_pipe_list				*add_pipe_list(t_pipe_list *list, int in, int out);
 void					clear_pipe(t_minishell *minishell);
 t_pipe_list				*get_last_pipe(t_pipe_list *list);
 t_pipe_list				*remove_last_pipe(t_pipe_list *list);
+char					ft_get_last_char(const char *str);
 
 /*Token builders*/
 

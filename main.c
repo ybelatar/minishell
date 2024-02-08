@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/08 03:10:31 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 07:15:02 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,10 +159,9 @@ int	routine(t_minishell *minishell)
 		signal(SIGQUIT, SIG_IGN);
 		// minishell->in = dup(0);
 		// minishell->out = dup(1);
-		// ft_prompt(minishell);
-		// minishell->cmd_line = readline(minishell->prompt);
-		// free(minishell->prompt);
-		minishell->cmd_line = readline("Minishell$ ");
+		ft_prompt(minishell);
+		minishell->cmd_line = readline(minishell->prompt);
+		free(minishell->prompt);
 		minishell->prompt = 0;
 		if (!minishell->cmd_line)
 			return (clear_env(minishell->env), clear_pid(minishell),
