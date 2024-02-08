@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:16:44 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/06 21:17:43 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 02:43:42 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	ft_open_redirs(t_minishell *minishell, t_cmd *cmd, t_redir_list *redirs)
 {
 	t_redir_list	*current;
 
-	if (!minishell || !cmd)
+	if (!minishell)
 		return (1);
 	if (!redirs)
 		return (0);

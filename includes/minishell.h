@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 06:53:34 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/07 23:41:56 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,13 @@ typedef struct s_pid_list
 	struct s_pid_list	*next;
 }						t_pid_list;
 
+typedef struct s_pipe_list
+{
+	int					in;
+	int					out;
+	struct s_pipe_list	*next;
+}						t_pipe_list;
+
 typedef struct s_minishell
 {
 	char				*cmd_line;
@@ -133,13 +140,14 @@ typedef struct s_minishell
 	int					in;
 	int					out;
 	t_pid_list			*pid_list;
+	t_pipe_list			*pipe_list;
 }						t_minishell;
 
 typedef struct s_cmd
 {
 	int					fd_in;
 	int					fd_out;
-	int					pid;
+	int					pipe_type;
 }						t_cmd;
 
 typedef struct s_heredoc
@@ -177,6 +185,10 @@ void					ft_exec_or(t_minishell *minishell, t_node_ast *ast,
 							t_cmd *cmd);
 void					ft_exec_and(t_minishell *minishell, t_node_ast *ast,
 							t_cmd *cmd);
+t_pipe_list				*add_pipe_list(t_pipe_list *list, int in, int out);
+void					clear_pipe(t_minishell *minishell);
+t_pipe_list				*get_last_pipe(t_pipe_list *list);
+t_pipe_list				*remove_last_pipe(t_pipe_list *list);
 
 /*Token builders*/
 

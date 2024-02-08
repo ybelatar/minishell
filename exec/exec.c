@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:57:35 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/07 07:01:12 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 05:53:14 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,46 +59,43 @@ static void			ft_wait(t_minishell *minishell);
 // 	ft_print_ast(ast->right_child);
 // }
 
-static inline void	sig_fork(t_cmd *cmd)
+static inline void	sig_fork(int *pid)
 {
 	signal(SIGINT, fork_sig_handler);
 	signal(SIGQUIT, fork_sig_handler);
-	cmd->pid = fork();
+	*pid = fork();
 }
 
 static inline int	ft_handle_err(t_node_ast *ast)
 {
 	struct stat	path_stat;
-	int			status;
 
-	status = 127;
 	stat(ast->args[0], &path_stat);
 	if (!access(ast->args[0], F_OK) && access(ast->args[0], X_OK))
-	{
-		ft_dprintf(2, "minishell: %s: %s\n", ast->args[0], strerror(errno));
-		status = 126;
-	}
+		return (ft_dprintf(2, "minishell: %s: %s\n", ast->args[0],
+				strerror(errno)), 126);
 	else if (!ft_strncmp(ast->args[0], "./", 2) && access(ast->args[0], F_OK))
-		ft_dprintf(2, "minishell: %s: %s\n", ast->args[0], strerror(errno));
-	else if (!ft_strncmp(ast->args[0], "./", 2) && !access(ast->args[0], F_OK)
-		&& S_ISDIR(path_stat.st_mode))
-	{
-		ft_dprintf(2, "minishell: %s: %s\n", ast->args[0], "Is a directory");
-		status = 126;
-	}
-	else
-		ft_dprintf(2, "%s: %s\n", ast->args[0], "command not found");
-	return (status);
+		return (ft_dprintf(2, "minishell: %s: %s\n", ast->args[0],
+				strerror(errno)), 127);
+	else if (!access(ast->args[0], F_OK) && S_ISDIR(path_stat.st_mode))
+		return (ft_dprintf(2, "minishell: %s: %s\n", ast->args[0],
+				"Is a directory"), 126);
+	else if (ft_strncmp(ast->args[0], "./", 2))
+		return (ft_dprintf(2, "minishell: %s: %s\n", ast->args[0],
+				"command not found"), 127);
+	return (0);
 }
 
-static inline void	ft_child(t_minishell *minishell, t_node_ast *ast)
+static inline void	ft_child(t_minishell *minishell, t_node_ast *ast,
+		t_cmd *cmd)
 {
 	char	**env;
 	char	*bin;
 	int		status;
 
-	ft_close(minishell->in);
-	ft_close(minishell->out);
+	(void)cmd;
+	// ft_close(minishell->in);
+	// ft_close(minishell->out);
 	env = ft_get_env(minishell);
 	execve(ast->args[0], ast->args, env);
 	bin = ft_get_bin(minishell, ast->args[0]);
@@ -108,6 +105,7 @@ static inline void	ft_child(t_minishell *minishell, t_node_ast *ast)
 	clear_ast(&minishell->ast);
 	clear_env(minishell->env);
 	clear_pid(minishell);
+	// display_pipes(minishell, "after exec", cmd->pipe_type);
 	ft_free_tab(env);
 	if (bin)
 		free(bin);
@@ -116,45 +114,100 @@ static inline void	ft_child(t_minishell *minishell, t_node_ast *ast)
 
 void	ft_exec_cmd(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
+	t_pipe_list	*lst;
+	int			pid;
+	int			pipe_in;
+	int			pipe_out;
+
 	// ft_expand(ast);
-	dup2(minishell->out, 1);
-	dup2(minishell->in, 0);
-	if (ft_open_redirs(minishell, cmd, ast->redirs))
-		return ;
-	sig_fork(cmd);
-	if (cmd->pid < 0)
+	// dup2(minishell->in, 0);
+	// dup2(minishell->out, 1);
+	// display_pipes(minishell, "before dup", cmd->pipe_type);
+	pipe_in = -1;
+	pipe_out = -1;
+	if (cmd->pipe_type)
+	{
+		lst = get_last_pipe(minishell->pipe_list);
+		if (cmd->pipe_type == 1)
+		{
+			pipe_out = lst->out;
+			lst->out = -1;
+		}
+		else if (cmd->pipe_type == 2)
+		{
+			pipe_in = lst->in;
+			lst->in = -1;
+			remove_last_pipe(minishell->pipe_list);
+		}
+		else if (cmd->pipe_type == 3)
+		{
+			pipe_in = lst->in;
+			lst->in = -1;
+			lst = remove_last_pipe(minishell->pipe_list);
+			pipe_out = lst->out;
+			lst->out = -1;
+		}
+	}
+	sig_fork(&pid);
+	if (pid < 0)
 	{
 		ft_dprintf(2, "minishell: %s\n", strerror(errno));
 		return ;
 	}
-	if (cmd->pid == 0)
-		ft_child(minishell, ast);
-	if (cmd->pid)
-		minishell->pid_list = add_pid_list(minishell->pid_list, cmd->pid);
+	if (pid == 0)
+	{
+		clear_pipe(minishell);
+		if (pipe_in > 0)
+		{
+			dup2(pipe_in, 0);
+			ft_close(pipe_in);
+		}
+		if (pipe_out > 0)
+		{
+			dup2(pipe_out, 1);
+			ft_close(pipe_out);
+		}
+		// display_pipes(minishell, "after dup", cmd->pipe_type);
+		if (ft_open_redirs(minishell, cmd, ast->redirs))
+		{
+			clear_ast(&minishell->ast);
+			clear_env(minishell->env);
+			clear_pid(minishell);
+			exit(errno);
+		}
+		ft_child(minishell, ast, cmd);
+	}
+	if (pid)
+		minishell->pid_list = add_pid_list(minishell->pid_list, pid);
+	ft_close(pipe_in);
+	ft_close(pipe_out);
 }
 
 void	ft_exec_pipe(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
-	// const t_fct_ptr	exec_fct[4] = {&ft_exec_cmd, &ft_exec_pipe, &ft_exec_or,
-	//		&ft_exec_and};
-	// int				pipedes[2];
-	// if (pipe(pipedes))
-	// {
-	// 	perror("bash");
-	// 	if (cmd)
-	// 		if (cmd->fd_out != 1)
-	// 			ft_close(cmd->fd_out);
-	// 	return ;
-	// }
-	(void)minishell;
+	const t_fct_ptr	exec_fct[4] = {&ft_exec_cmd, &ft_exec_pipe, &ft_exec_or,
+			&ft_exec_and};
+	int				pipedes[2];
+	t_cmd			actual;
+
 	(void)cmd;
-	(void)ast;
-	// cmd->fd_out = pipedes[1];
-	// exec_fct[ast->left_child->type](minishell, ast->left_child, cmd);
-	// ft_close(cmd->fd_out);
-	// cmd->fd_in = pipedes[0];
-	// exec_fct[ast->right_child->type](minishell, ast->right_child, cmd);
-	// ft_close(cmd->fd_in);
+	if (pipe(pipedes))
+	{
+		perror("minishell");
+		return ;
+	}
+	minishell->pipe_list = add_pipe_list(minishell->pipe_list, pipedes[0],
+			pipedes[1]);
+	actual = (t_cmd){0, 1, 1};
+	// display_pipes(minishell, "before fct", cmd->pipe_type);
+	exec_fct[ast->left_child->type](minishell, ast->left_child, &actual);
+	// ft_close(pipedes[1]);
+	actual.pipe_type = 2;
+	if (cmd->pipe_type == 1)
+		actual.pipe_type = 3;
+	// display_pipes(minishell, "after fct", cmd->pipe_type);
+	ft_exec_cmd(minishell, ast->right_child, &actual);
+	// ft_close(pipedes[0]);
 }
 
 void	ft_exec_or(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
@@ -164,6 +217,7 @@ void	ft_exec_or(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 	t_node_ast		*left;
 	t_node_ast		*right;
 
+	cmd->pipe_type = 0;
 	left = ast->left_child;
 	exec_fct[left->type](minishell, left, cmd);
 	ft_wait(minishell);
@@ -171,7 +225,6 @@ void	ft_exec_or(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 		return ;
 	right = ast->right_child;
 	exec_fct[right->type](minishell, right, cmd);
-	ft_wait(minishell);
 }
 
 void	ft_exec_and(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
@@ -181,6 +234,7 @@ void	ft_exec_and(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 	t_node_ast		*left;
 	t_node_ast		*right;
 
+	cmd->pipe_type = 0;
 	left = ast->left_child;
 	exec_fct[left->type](minishell, left, cmd);
 	ft_wait(minishell);
@@ -188,7 +242,6 @@ void	ft_exec_and(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 		return ;
 	right = ast->right_child;
 	exec_fct[right->type](minishell, right, cmd);
-	ft_wait(minishell);
 }
 
 static void	ft_wait(t_minishell *minishell)
@@ -196,6 +249,8 @@ static void	ft_wait(t_minishell *minishell)
 	t_pid_list	*current;
 	int			status;
 
+	if (!minishell->pid_list)
+		return ;
 	current = minishell->pid_list;
 	while (current)
 	{
@@ -218,8 +273,7 @@ void	ft_exec(t_minishell *minishell)
 
 	if (!minishell || !minishell->ast)
 		return ;
-	cmd = (t_cmd){0, 1, -1};
+	cmd = (t_cmd){0, 1, 0};
 	exec_fct[minishell->ast->type](minishell, minishell->ast, &cmd);
-	if (minishell->pid_list)
-		ft_wait(minishell);
+	ft_wait(minishell);
 }

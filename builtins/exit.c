@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:03 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 04:51:23 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 02:38:00 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ void	clear_exit(t_minishell *minishell)
 	clear_ast(&minishell->ast);
 	clear_env(minishell->env);
 	clear_pid(minishell);
-	ft_close(minishell->in);
-	ft_close(minishell->out);
+	clear_pipe(minishell);
+	//ft_close(minishell->in);
+	//ft_close(minishell->out);
 	rl_clear_history();
 }
 

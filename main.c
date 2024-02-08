@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 06:49:23 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/08 03:10:31 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,11 @@ void	display_tokens(t_token *token)
 
 #define COUNT 10
 
-void display_tab(char **tab)
+void	display_tab(char **tab)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (!tab)
 		return ;
 	while (tab[i])
@@ -54,7 +55,7 @@ void display_tab(char **tab)
 	}
 }
 
-void display_redir(t_redir_list *redirs)
+void	display_redir(t_redir_list *redirs)
 {
 	if (!redirs)
 		return ;
@@ -156,38 +157,40 @@ int	routine(t_minishell *minishell)
 	{
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, SIG_IGN);
-		minishell->in = dup(0);
-		minishell->out = dup(1);
-		ft_prompt(minishell);
-		minishell->cmd_line = readline(minishell->prompt);
-		free(minishell->prompt);
+		// minishell->in = dup(0);
+		// minishell->out = dup(1);
+		// ft_prompt(minishell);
+		// minishell->cmd_line = readline(minishell->prompt);
+		// free(minishell->prompt);
+		minishell->cmd_line = readline("Minishell$ ");
 		minishell->prompt = 0;
 		if (!minishell->cmd_line)
-			return (ft_close(minishell->in), ft_close(minishell->out),
-				clear_env(minishell->env), clear_pid(minishell), ft_dprintf(2,
-					"exit\n"), 0);
-		add_history(minishell->cmd_line);
+			return (clear_env(minishell->env), clear_pid(minishell),
+				ft_dprintf(2, "exit\n"), 0);
+		if (*minishell->cmd_line)
+			add_history(minishell->cmd_line);
 		minishell->pretokens = pretokenization(minishell->cmd_line);
 		free(minishell->cmd_line);
 		minishell->tokens = tokenization(minishell->pretokens);
 		minishell->ast = parser(minishell->tokens);
 		ft_exec(minishell);
-		dup2(minishell->out, 1);
-		ft_close(minishell->out);
-		dup2(minishell->in, 0);
-		ft_close(minishell->in);
+		// dup2(minishell->out, 1);
+		// ft_close(minishell->out);
+		// dup2(minishell->in, 0);
+		// ft_close(minishell->in);
 		clear_ast(&(minishell->ast));
 		clear_pid(minishell);
+		clear_pipe(minishell);
 	}
 }
 
 int	main(int ac, char **av, char **env)
 {
-	t_minishell		minishell;
+	t_minishell	minishell;
 
 	(void)ac;
 	(void)av;
-	minishell = (t_minishell){0, 0, copy_env(env), 0, 0, 0, 0, -1, -1, 0};
+	minishell = (t_minishell){0, 0, copy_env(env), 0, 0, 0, 0, -1, -1, 0, 0};
 	routine(&minishell);
 	return (g_status);
 }
