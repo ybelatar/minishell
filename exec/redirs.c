@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:16:44 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/08 02:43:42 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 23:38:26 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	ft_handle_in(t_minishell *minishell, t_cmd *cmd,
 		return (-1);
 	}
 	dup2(fd, 0);
-	close(fd);
+	ft_close(fd);
 	return (fd);
 }
 
@@ -44,7 +44,7 @@ static int	ft_handle_out(t_minishell *minishell, t_cmd *cmd,
 		return (-1);
 	}
 	dup2(fd, 1);
-	close(fd);
+	ft_close(fd);
 	return (fd);
 }
 
@@ -55,11 +55,8 @@ static int	ft_handle_heredoc(t_minishell *minishell, t_cmd *cmd,
 
 	(void)minishell;
 	(void)cmd;
-	heredoc.in = -1;
-	heredoc.out = -1;
-	heredoc.path = 0;
-	if (ft_read_heredoc(&heredoc, redir->file))
-		return (-1);
+	dup2(redir->fd, 0);
+	ft_close(redir->fd);
 	return (heredoc.in);
 }
 

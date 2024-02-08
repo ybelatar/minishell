@@ -6,21 +6,40 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:07 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 02:36:43 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 09:44:20 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	display_export(t_env *env)
+int	display_export(t_env *env)
 {
+	int	len;
+
 	if (!env)
 		return ;
 	while (env)
 	{
-		printf("export %s=\"%s\"\n", env->key, env->value);
+		if (write(1, "export ", 7) < 7)
+			return (ft_dprintf(2, "minishell: export: write error: %s",
+					strerror(errno)), 125);
+		len = ft_strlen(env->key);
+		if (write(1, env->key, len) < len)
+			return (ft_dprintf(2, "minishell: export: write error: %s",
+					strerror(errno)), 125);
+		if (write(1, "=\"", 2) < 2)
+			return (ft_dprintf(2, "minishell: export: write error: %s",
+					strerror(errno)), 125);
+		len = ft_strlen(env->value);
+		if (write(1, env->value, len) < len)
+			return (ft_dprintf(2, "minishell: export: write error: %s",
+					strerror(errno)), 125);
+		if (write(1, "\"\n", 2) < 2)
+			return (ft_dprintf(2, "minishell: export: write error: %s",
+					strerror(errno)), 125);
 		env = env->next_env;
 	}
+	return (0);
 }
 
 int	print_justincase(char *str)

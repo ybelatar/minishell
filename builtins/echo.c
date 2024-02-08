@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:45:58 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 02:36:15 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 09:43:18 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	echo(char **tab)
 {
 	int	led;
 	int	i;
+	int	len;
 
 	if (!tab || !*tab)
 		return (0);
@@ -46,13 +47,19 @@ int	echo(char **tab)
 	}
 	while (tab[i])
 	{
-		if (!tab[i + 1])
-			printf("%s", tab[i]);
-		else
-			printf("%s ", tab[i]);
+		len = ft_strlen(tab[i]);
+		if (write(1, tab[i], len) < len)
+			return (ft_dprintf(2, "minishell: echo: write error: %s\n",
+					strerror(errno)), 125);
+		if (tab[i + 1])
+			if (!write(1, " ", 1))
+				return (ft_dprintf(2, "minishell: echo: write error: %s\n",
+						strerror(errno)), 125);
 		i++;
 	}
 	if (!led)
-		printf("\n");
+		if (!write(1, "\n", 1))
+			return (ft_dprintf(2, "minishell: echo: write error: %s\n",
+					strerror(errno)), 125);
 	return (0);
 }
