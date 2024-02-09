@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 05:48:40 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 06:19:09 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 05:12:00 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int get_real_len(char **args)
     return (len);
 }
 
-void rm_empty(char **args)
+void rm_empty(t_node_ast *node)
 {
     char **res;
     int i;
@@ -36,17 +36,17 @@ void rm_empty(char **args)
     
     i = 0;
     j = 0;
-    res = malloc(sizeof(char *) * (get_real_len(args) + 1));
+    res = malloc(sizeof(char *) * (get_real_len(node->args) + 1));
     if (!res)
         return ;
-    while (args[i])
+    while (node->args[i])
     {
-        if (*args[i])
-            res[j++] = args[i];
+        if (node->args[i])
+            res[j++] = ft_strdup(node->args[i]);
         i++;
     }
-    clear_tab(args);
-    args = res;
+    clear_tab(node->args);
+    node->args = res;
 }
 
 // void clean_empty_str(char **args)

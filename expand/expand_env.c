@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 04:55:52 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 05:44:18 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 05:09:38 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,17 @@ char *expand_env_one(char *str, t_minishell *minishell)
         else
             res = ft_strjoin_free2(res, normal(str, &i));
     }
+    return (res);
 }
 
-void expand_env(char **args, t_minishell *minishell)
+void expand_env(t_node_ast *node, t_minishell *minishell)
 {
     int i;
 
     i = 0;
-    while (args[i])
-        args[i] = expand_env_one(args[i++], minishell);
+    while (node->args[i])
+    {
+        node->args[i] = expand_env_one(node->args[i], minishell);
+        i++;
+    }
 }
