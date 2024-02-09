@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:07 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/08 09:44:20 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 04:54:37 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,25 @@ int	display_export(t_env *env)
 	int	len;
 
 	if (!env)
-		return ;
+		return (0);
 	while (env)
 	{
 		if (write(1, "export ", 7) < 7)
-			return (ft_dprintf(2, "minishell: export: write error: %s",
+			return (ft_dprintf(2, "minishell: export: write error: %s\n",
 					strerror(errno)), 125);
 		len = ft_strlen(env->key);
 		if (write(1, env->key, len) < len)
-			return (ft_dprintf(2, "minishell: export: write error: %s",
+			return (ft_dprintf(2, "minishell: export: write error: %s\n",
 					strerror(errno)), 125);
 		if (write(1, "=\"", 2) < 2)
-			return (ft_dprintf(2, "minishell: export: write error: %s",
+			return (ft_dprintf(2, "minishell: export: write error: %s\n",
 					strerror(errno)), 125);
 		len = ft_strlen(env->value);
 		if (write(1, env->value, len) < len)
-			return (ft_dprintf(2, "minishell: export: write error: %s",
+			return (ft_dprintf(2, "minishell: export: write error: %s\n",
 					strerror(errno)), 125);
 		if (write(1, "\"\n", 2) < 2)
-			return (ft_dprintf(2, "minishell: export: write error: %s",
+			return (ft_dprintf(2, "minishell: export: write error: %s\n",
 					strerror(errno)), 125);
 		env = env->next_env;
 	}

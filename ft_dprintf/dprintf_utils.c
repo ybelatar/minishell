@@ -1,67 +1,60 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   dprintf_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 18:53:09 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/02 03:42:06 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 04:46:56 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_dprintf.h"
 
-void	ft_putcharbis(char c, int *length, int fd)
+void	ft_flushbuff(t_print *print)
 {
-	write(fd, &c, 1);
-	*length = *length + 1;
+	if (!print->size)
+		return ;
+	print->len += write(print->fd, print->buff, print->size);
+	print->size = 0;
 }
 
-void	ft_putstrbis(char *str, int *length, int fd)
+void	ft_putchar(const char c, t_print *print)
 {
-	int	i;
+	if (print->size + 1 == BUFFER_SIZE)
+		ft_flushbuff(print);
+	print->buff[print->size++] = c;
+}
 
-	if (!str)
+void	ft_putstr(const char *str, t_print *print)
+{
+	const char	*s;
+
+	s = str;
+	while (*s)
 	{
-		write(fd, "(null)", 6);
-		*length = *length + 6;
-		return ;
-	}
-	i = 0;
-	while (str[i])
-	{
-		write(fd, str + i, 1);
-		*length = *length + 1;
-		i++;
+		ft_putchar(*s, print);
+		++s;
 	}
 }
 
-void	ft_putptrhexabis(uintptr_t ptr, int *length, int fd)
+void	ft_putnbr(int nb, t_print *print)
 {
-	if (!ptr)
-	{
-		write(fd, "(nil)", 5);
-		*length = *length + 5;
-		return ;
-	}
-	write(fd, "0x", 2);
-	*length = *length + 2;
-	ft_putnbrbasebis(ptr, 16, length, fd);
-}
+	unsigned int	n;
+	unsigned int	sign;
 
-void	ft_putnbrdecabis(int n, int *length, int fd)
-{
-	if (n == -2147483648)
+	n = nb;
+	sign = 1;
+	if (nb < 0)
 	{
-		write(2, "-2147483648", 11);
-		*length = *length + 11;
-		return ;
+		n = -nb;
+		ft_putchar('-', print);
 	}
-	if (n < 0)
+	while (n >= 10)
 	{
-		ft_putcharbis('-', length, fd);
-		n *= -1;
+		ft_putchar('0' + n % 10, print);
+		n = n / 10;
 	}
-	ft_putnbrbasebis(n, 10, length, fd);
+	ft_putchar('0' + n % 10, print);
 }

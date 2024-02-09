@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:23 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/30 01:58:55 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 04:21:24 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,6 @@ void	display_env(t_env *env)
 		ft_dprintf(1, "%s=%s\n", env->key, env->value);
 		env = env->next_env;
 	}
-}
-
-char	*get_env(char *key, t_env *env)
-{
-	if (!env)
-		return (NULL);
-	if (!ft_strcmp(key, "?"))
-		return (ft_itoa(g_status));
-	while (env)
-	{
-		if (!ft_strcmp(env->key, key))
-			return (ft_strdup(env->value));
-		env = env->next_env;
-	}
-	return (NULL);
 }
 
 void	update_env(char *key, char *value, t_minishell *minishell)

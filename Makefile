@@ -12,8 +12,8 @@ SRCS =	ast_redir.c ast_utils.c ast_utils2.c ast.c \
 		ft_calloc.c ft_isalnum.c ft_strchr.c ft_strcmp.c ft_strdup.c \
 		ft_strjoin.c ft_strlcpy.c ft_substr.c ft_atoi.c ft_parse.c \
 		ft_dprintf.c dprintf_utils.c dprintf_utils2.c pid.c pipe.c \
-		clear.c clear1.c env.c exec.c exec_utils.c redirs.c heredoc.c \
-		split.c get_next_line.c utils.c signal.c \
+		clear.c clear1.c exec.c exec_utils.c exec_child.c exec_builtin.c redirs.c \
+		split.c get_next_line.c utils.c signal.c cd.c echo.c env_utils.c env.c exit.c export.c pwd.c unset.c \
 		main.c
 
 OBJ_DIR = obj

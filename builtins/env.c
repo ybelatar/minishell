@@ -6,17 +6,18 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:01 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/08 09:43:27 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 02:53:28 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	env(t_minishell *minishell)
+int	env(char **args, t_minishell *minishell)
 {
 	t_env	*env;
 	int		len;
 
+	(void)args;
 	if (!minishell->env)
 		return (0);
 	env = minishell->env;

@@ -3,61 +3,82 @@
 /*                                                        :::      ::::::::   */
 /*   ft_dprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 14:56:35 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/10 22:45:44 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 01:42:00 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_dprintf.h"
 
-void	ft_match(char c, va_list *parameters, int *length, int fd)
+static inline void	ft_parseflag(char c, va_list arg, t_print *print)
 {
-	if (c == 'i' || c == 'd')
-		return (ft_putnbrdecabis(va_arg(*parameters, int), length, fd));
-	if (c == 'u')
-		return (ft_putnbrbasebis(va_arg(*parameters, unsigned int), 10, length,
-				fd));
 	if (c == 'c')
-		return (ft_putcharbis(va_arg(*parameters, int), length, fd));
-	if (c == 's')
-		return (ft_putstrbis(va_arg(*parameters, char *), length, fd));
-	if (c == 'p')
-		return (ft_putptrhexabis((uintptr_t)va_arg(*parameters, void *), length,
-				fd));
-	if (c == 'x')
-		return (ft_putnbrbasebis(va_arg(*parameters, unsigned int), 16, length,
-				fd));
-	if (c == 'X')
-		return (ft_putnbrbasebis(va_arg(*parameters, unsigned int), 17, length,
-				fd));
-	if (c == '%')
-		return (ft_putcharbis('%', length, fd));
+		ft_putchar(va_arg(arg, int), print);
+	else if (c == 's')
+		ft_putstr(va_arg(arg, char *), print);
+	else if (c == 'p')
+		ft_putaddr(va_arg(arg, void *), print);
+	else if (c == 'd' || c == 'i')
+		ft_putnbr(va_arg(arg, int), print);
+	else if (c == 'u')
+		ft_putunbr(va_arg(arg, unsigned int), print);
+	else if (c == 'x')
+		ft_putnbrbase(va_arg(arg, unsigned int), print, "0123456789abcdef", 16);
+	else if (c == 'X')
+		ft_putnbrbase(va_arg(arg, unsigned int), print, "0123456789ABCDEF", 16);
+	else
+	{
+		ft_putchar('%', print);
+		ft_putchar(c, print);
+	}
 }
 
-int	ft_dprintf(int fd, const char *str, ...)
+int	ft_dprintf(int fd, const char *s, ...)
 {
-	int		i;
-	int		length;
-	va_list	parameters;
+	t_print	print;
+	va_list	args;
 
-	va_start(parameters, str);
-	i = 0;
-	length = 0;
-	while (str[i])
+	print.fd = fd;
+	print.len = 0;
+	print.size = 0;
+	va_start(args, s);
+	while (*s)
 	{
-		while (str[i] && str[i] != '%')
-		{
-			write(fd, str + i, 1);
-			length++;
-			i++;
-		}
-		if (str[i] == '%' && str[i + 1])
-			ft_match(str[++i], &parameters, &length, fd);
-		if (str[i])
-			i++;
+		if (*s == '%' && *(s + 1) && *(s + 1) != '%')
+			ft_parseflag(*(++s), args, &print);
+		else if (*s == '%' && *(s + 1) == '%')
+			ft_putchar(*(++s), &print);
+		else
+			ft_putchar(*s, &print);
+		++s;
 	}
-	va_end(parameters);
-	return (length);
+	va_end(args);
+	ft_flushbuff(&print);
+	return (print.len);
+}
+
+int	ft_printf(const char *s, ...)
+{
+	t_print	print;
+	va_list	args;
+
+	print.fd = 1;
+	print.len = 0;
+	print.size = 0;
+	va_start(args, s);
+	while (*s)
+	{
+		if (*s == '%' && *(s + 1) && *(s + 1) != '%')
+			ft_parseflag(*(++s), args, &print);
+		else if (*s == '%' && *(s + 1) == '%')
+			ft_putchar(*(++s), &print);
+		else
+			ft_putchar(*s, &print);
+		++s;
+	}
+	va_end(args);
+	ft_flushbuff(&print);
+	return (print.len);
 }
