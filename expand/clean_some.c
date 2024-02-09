@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 05:48:40 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 05:12:00 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 08:23:48 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,11 @@ void rm_empty(t_node_ast *node)
         return ;
     while (node->args[i])
     {
-        if (node->args[i])
+        if (*node->args[i])
             res[j++] = ft_strdup(node->args[i]);
         i++;
     }
+    res[j] = 0;
     clear_tab(node->args);
     node->args = res;
 }
-
-// void clean_empty_str(char **args)
-// {
-//     int i;
-// }

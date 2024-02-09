@@ -10,7 +10,7 @@ SRCS =	ast_redir.c ast_utils.c ast_utils2.c ast.c \
 		clean_some.c expand_env_utils.c expand_env.c expand.c\
 		split_no_quotes.c strip_quotes.c wildcards_utils.c wildcards.c\
 		pretoken_utils.c pretoken_utils2.c pretoken.c checking.c \
-		automate.c automate2.c token.c token_utils.c \
+		automate.c automate2.c token.c token_utils.c heredoc.c\
 		ft_calloc.c ft_isalnum.c ft_strchr.c ft_strcmp.c ft_strdup.c \
 		ft_strjoin.c ft_strlcpy.c ft_substr.c ft_atoi.c ft_parse.c \
 		ft_dprintf.c dprintf_utils.c dprintf_utils2.c pid.c pipe.c \

@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 04:55:52 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 05:09:38 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 09:18:51 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char *normal(char *str, int *i)
     return (ft_substr(str, start, *i - start));
 }
 
-char *expand_env_one(char *str, t_minishell *minishell)
+char *expand_env_one(char *str, t_minishell *minishell, int led)
 {
     char *res;
     int i;
@@ -52,17 +52,33 @@ char *expand_env_one(char *str, t_minishell *minishell)
         else
             res = ft_strjoin_free2(res, normal(str, &i));
     }
+	if (led)
+		free(str);
     return (res);
+}
+
+void expand_env_redir(t_redir_list *redir, t_minishell *minishell)
+{
+	redir->pre_file = redir->file;
+	// if (!ft_strcmp(redir->file, "\"\"") || !ft_strcmp(redir->file, "''"))
+	// {
+	// 	// free(redir->file);	
+	// 	redir->file = 0;
+	// }
+	// else
+	redir->file = expand_env_one(redir->file, minishell, 0);
 }
 
 void expand_env(t_node_ast *node, t_minishell *minishell)
 {
     int i;
 
+	if (!node->args)
+		return ;
     i = 0;
     while (node->args[i])
     {
-        node->args[i] = expand_env_one(node->args[i], minishell);
+        node->args[i] = expand_env_one(node->args[i], minishell, 1);
         i++;
     }
 }

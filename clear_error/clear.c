@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 04:19:55 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 08:35:52 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	clear_redirs(t_redir_list **redirs)
 	{
 		tmp = (*redirs)->next_redir;
 		free((*redirs)->file);
+		free((*redirs)->pre_file);
 		free(*redirs);
 		*redirs = tmp;
 	}

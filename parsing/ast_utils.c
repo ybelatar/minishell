@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 21:37:13 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 08:01:12 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ t_node_ast	*create_node(t_node_type type)
 	node->type = type;
 	node->left_child = NULL;
 	node->right_child = NULL;
+	node->is_expanded = 0;
 	return (node);
 }

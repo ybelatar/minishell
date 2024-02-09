@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:16:44 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 04:34:36 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 09:45:54 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_handle_in(t_minishell *minishell, t_cmd *cmd,
-		t_redir_list *redir)
+static int	ft_handle_in(t_redir_list *redir)
 {
 	int	fd;
 
-	(void)minishell;
-	(void)cmd;
+	if ((!(*redir->file) && !ft_strncmp(redir->pre_file, "$", 1)) || !ft_strcmp(redir->pre_file, "*"))
+	{
+		ft_dprintf(2, "minishell: %s: ambiguous redirect\n", redir->pre_file);
+		return (-1);
+	}
 	fd = open(redir->file, O_RDONLY);
 	if (fd < 0)
 	{
@@ -35,13 +37,15 @@ static int	ft_handle_in(t_minishell *minishell, t_cmd *cmd,
 	return (fd);
 }
 
-static int	ft_handle_out(t_minishell *minishell, t_cmd *cmd,
-		t_redir_list *redir)
+static int	ft_handle_out(t_redir_list *redir)
 {
 	int	fd;
 
-	(void)minishell;
-	(void)cmd;
+	if ((!(*redir->file) && !ft_strncmp(redir->pre_file, "$", 1)) || !ft_strcmp(redir->pre_file, "*"))
+	{
+		ft_dprintf(2, "minishell: %s: ambiguous redirect\n", redir->pre_file);
+		return (-1);
+	}
 	fd = open(redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
 	{
@@ -58,13 +62,9 @@ static int	ft_handle_out(t_minishell *minishell, t_cmd *cmd,
 	return (fd);
 }
 
-static int	ft_handle_heredoc(t_minishell *minishell, t_cmd *cmd,
-		t_redir_list *redir)
+static int	ft_handle_heredoc(t_redir_list *redir)
 {
-	t_heredoc	heredoc;
 
-	(void)minishell;
-	(void)cmd;
 	if (dup2(redir->fd, 0) < 0)
 	{
 		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
@@ -72,16 +72,18 @@ static int	ft_handle_heredoc(t_minishell *minishell, t_cmd *cmd,
 		return (-1);
 	}
 	ft_close(redir->fd);
-	return (heredoc.in);
+	return (redir->fd);
 }
 
-static int	ft_handle_append(t_minishell *minishell, t_cmd *cmd,
-		t_redir_list *redir)
+static int	ft_handle_append(t_redir_list *redir)
 {
 	int	fd;
 
-	(void)minishell;
-	(void)cmd;
+	if ((!(*redir->file) && !ft_strncmp(redir->pre_file, "$", 1)) || !ft_strcmp(redir->pre_file, "*"))
+	{
+		ft_dprintf(2, "minishell: %s: ambiguous redirect\n", redir->pre_file);
+		return (-1);
+	}
 	fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (fd < 0)
 	{
@@ -112,13 +114,13 @@ int	ft_open_redirs(t_minishell *minishell, t_cmd *cmd, t_redir_list *redirs)
 	while (current)
 	{
 		if (current->type == R_IN)
-			cmd->fd_in = ft_handle_in(minishell, cmd, current);
+			cmd->fd_in = ft_handle_in(current);
 		else if (current->type == R_OUT)
-			cmd->fd_out = ft_handle_out(minishell, cmd, current);
+			cmd->fd_out = ft_handle_out(current);
 		else if (current->type == R_HEREDOC)
-			cmd->fd_in = ft_handle_heredoc(minishell, cmd, current);
+			cmd->fd_in = ft_handle_heredoc(current);
 		else if (current->type == R_APPEND)
-			cmd->fd_out = ft_handle_append(minishell, cmd, current);
+			cmd->fd_out = ft_handle_append(current);
 		if (cmd->fd_in < 0 || cmd->fd_out < 0)
 			return (1);
 		current = current->next_redir;

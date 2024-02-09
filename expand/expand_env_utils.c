@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 05:04:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 04:13:11 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 09:09:52 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ char	*double_quote(char *str, int *i, t_minishell *minishell)
 
 	res = NULL;
 	(*i)++;
+	res = ft_strjoin_free2(res, ft_strdup("\""));
 	while (str[*i] != '"')
 	{
 		if (str[*i] == '$')

@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 07:01:39 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 04:23:47 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 06:20:11 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,11 @@ char	**expanded_wildcard(char *str)
 		if (ft_ismatch(entry->d_name, str, indic))
 			tab = join_tab(tab, ft_strdup(entry->d_name));
 		entry = readdir(dir);
+	}
+	if (!tab)
+	{
+		
+		tab = join_tab(tab, ft_strdup(str));
 	}
 	closedir(dir);
 	return (tab);

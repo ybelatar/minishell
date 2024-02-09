@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 00:42:49 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/01/11 00:43:28 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 09:42:54 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ t_token	*last_token(t_token *token)
 
 int	new_token(t_token **tokens, char *content, t_token_type type)
 {
-	t_token	*new;
-	t_token	*last;
+	t_token		*new;
+	t_token		*last;
 
 	new = malloc(sizeof(t_token));
 	if (!new)

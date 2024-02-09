@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 07:01:19 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 04:23:56 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 08:23:42 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,16 @@
 int has_wildcard(char *str)
 {
     int i;
+    char c;
 
     i = 0;
     while (str[i])
     {
-        if (str[i] == '"')
+        if (str[i] == '"' || str[i] == '\'')
         {
+            c = str[i];
             i++;
-            while (str[i] != '"')
-                i++;
-        }
-        else if (str[i] == '\'')
-        {
-            i++;
-            while (str[i] != '\'')
+            while (str[i] != c)
                 i++;
         }
         else if (str[i] == '*')
@@ -43,37 +39,41 @@ char **insert_tab_in_tab(char **args, char **tab, int *i)
     char **res;
     int j;
     int k;
+    int l;
 
-    res = malloc(sizeof(char) * (plen(args) + plen(tab)));
+    res = malloc(sizeof(char *) * (plen(args) + plen(tab) + 1));
     if (!res)
         return (NULL);
     j = 0;
     k = 0;
-    while (j < plen(args) + plen(tab))
+    l = 0;
+    while (j < plen(args) + plen(tab) - 1)
     {
         if (j == *i)
         {
             free(args[k++]);
-            while (*tab)
-                res[j++] = *tab;
+            while (tab[l])
+                res[j++] = tab[l++];
         }
         else
             res[j++] = args[k++];
     }
     res[j] = 0;
     (*i) += plen(tab);
+    free(args);
+    free(tab);
     return (res);
 }
 
-void wildcards(char **args)
+void wildcards(t_node_ast *node)
 {
     int i;
 
     i = 0;
-    while (args[i])
+    while (node->args[i])
     {
-        if (has_wildcard(args[i]))
-            args = insert_tab_in_tab(args, expanded_wildcard(args[i]), &i);
+        if (has_wildcard(node->args[i]))
+            node->args = insert_tab_in_tab(node->args, expanded_wildcard(node->args[i]), &i);
         else
             i++;
     }

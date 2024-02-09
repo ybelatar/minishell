@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 03:14:32 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 04:19:54 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 08:25:34 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,13 @@ char	**ft_split_no_quotes(char *s, char c)
 	return (words);
 }
 
-void    split_no_quotes(char **args)
+void    split_no_quotes(t_node_ast *node)
 {
     int i;
 
     i = 0;
-    while (args[i])
+    while (node->args[i])
     {
-        args = insert_tab_in_tab(args, ft_split_no_quotes(args[i], ' '), &i);
-        i++;
+        node->args = insert_tab_in_tab(node->args, ft_split_no_quotes(node->args[i], ' '), &i);
     }
 }

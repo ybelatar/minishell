@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:19:57 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 04:48:56 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 09:32:23 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static inline int	ft_child(t_minishell *minishell, t_cmd *cmd,
 	env = ft_get_env(minishell);
 	bin = 0;
 	status = 0;
-	if (ast->args)
+	if (ast->args && ast->args[0])
 	{
 		execve(ast->args[0], ast->args, env);
 		bin = ft_get_bin(minishell, ast->args[0]);

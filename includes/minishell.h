@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 04:08:38 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 09:53:18 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 # define REDIR_HEREDOC -42
 # define BUFFER_SIZE 1024
+# define HEREDOC_EOF "minishell: warning: here-document delimited by end-of-file (wanted `%s')\n"
 
 extern int				g_status;
 
@@ -95,6 +96,7 @@ typedef struct s_token
 typedef struct s_redir_list
 {
 	t_redir_type		type;
+	char				*pre_file;
 	char				*file;
 	int					fd;
 	struct s_redir_list	*next_redir;
@@ -105,6 +107,7 @@ typedef struct s_node_ast
 	t_node_type			type;
 	char				**args;
 	struct s_redir_list	*redirs;
+	int					is_expanded;
 	struct s_node_ast	*left_child;
 	struct s_node_ast	*right_child;
 }						t_node_ast;
@@ -162,7 +165,7 @@ typedef struct s_heredoc
 
 typedef void			(*t_fct_ptr)(t_minishell *, t_node_ast *, t_cmd *);
 
-typedef int				(t_builtin)(char **, t_minishell *);
+typedef					int(t_builtin)(char **, t_minishell *);
 
 /*Parser*/
 
@@ -223,13 +226,17 @@ char					*double_quote(char *str, int *i,
 char					*variable_env(char *str, int *i,
 							t_minishell *minishell);
 char					**expanded_wildcard(char *str);
-void					wildcards(char **args);
+void					wildcards(t_node_ast *node);
 char					**insert_tab_in_tab(char **args, char **tab, int *i);
 void					ft_expand(t_node_ast *node, t_minishell *minishell);
 void					expand_env(t_node_ast *node, t_minishell *minishell);
 void					rm_empty(t_node_ast *node);
-void					split_no_quotes(char **args);
-void					strip_quotes(char **args);
+void					split_no_quotes(t_node_ast *node);
+void					strip_quotes(t_node_ast *node);
+void					expand_env_redir(t_redir_list *redir,
+							t_minishell *minishell);
+void					strip_quotes_redir(t_redir_list *redir);
+void					nullify_status(void);
 
 /*Redirections*/
 

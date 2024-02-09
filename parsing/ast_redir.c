@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_redir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 21:37:04 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/05 17:49:49 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 09:44:17 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,21 @@ int	add_redir(t_node_ast *node, t_token **token)
 t_redir_list	*create_redir(t_redir_type type, char *file)
 {
 	t_redir_list	*redir;
+	t_heredoc		heredoc;
 
 	redir = ft_calloc(1, sizeof(t_redir_list));
 	if (!redir)
 		return (NULL);
 	redir->type = type;
 	redir->file = ft_strdup(file);
+	redir->pre_file = 0;
 	if (!redir->file)
 		return (free(redir), NULL);
+	if (type == R_HEREDOC)
+	{
+		if (!ft_read_heredoc(&heredoc, file))
+			redir->fd = heredoc.in;
+	}
 	return (redir);
 }
 

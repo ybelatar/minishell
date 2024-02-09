@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:14:55 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 04:52:19 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 09:31:37 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ static void	ft_exec_or(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd);
 
 static void	ft_exec_cmd(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
-  if (!ast->args)
-		return ;
-	if (!ft_strcmp("cd", ast->args[0]))
+	ft_expand(ast, minishell);
+	if (!ast->args || !ast->args[0])
+		ft_exec_child(minishell, ast, cmd);
+	else if (!ft_strcmp("cd", ast->args[0]))
 		ft_exec_builtin(minishell, ast, cmd, &cd);
 	else if (!ft_strcmp("echo", ast->args[0]))
 		ft_exec_builtin(minishell, ast, cmd, &echo);
