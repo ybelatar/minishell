@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/08 07:15:02 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 04:48:37 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,10 @@ void	display_tab(char **tab)
 		return ;
 	while (tab[i])
 	{
-		printf("%s, ", tab[i]);
+		ft_dprintf(2, "%s :", tab[i]);
 		i++;
 	}
+	ft_dprintf(2, "\n");
 }
 
 void	display_redir(t_redir_list *redirs)

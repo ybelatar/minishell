@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:57:35 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/08 08:50:51 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 05:06:51 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	ft_exec_cmd(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 	int			pipe_in;
 	int			pipe_out;
 
-	// ft_expand(ast);
+	ft_expand(ast, minishell);
 	// dup2(minishell->in, 0);
 	// dup2(minishell->out, 1);
 	// display_pipes(minishell, "before dup", cmd->pipe_type);
