@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:14:55 by wouhliss          #+#    #+#             */
 /*   Updated: 2024/02/09 04:52:19 by wouhliss         ###   ########.fr       */
@@ -18,7 +18,7 @@ static void	ft_exec_or(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd);
 
 static void	ft_exec_cmd(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
-	if (!ast->args)
+  if (!ast->args)
 		return ;
 	if (!ft_strcmp("cd", ast->args[0]))
 		ft_exec_builtin(minishell, ast, cmd, &cd);

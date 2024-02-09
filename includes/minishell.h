@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
 /*   Updated: 2024/02/09 04:08:38 by wouhliss         ###   ########.fr       */
@@ -222,6 +222,14 @@ char					*double_quote(char *str, int *i,
 							t_minishell *minishell);
 char					*variable_env(char *str, int *i,
 							t_minishell *minishell);
+char					**expanded_wildcard(char *str);
+void					wildcards(char **args);
+char					**insert_tab_in_tab(char **args, char **tab, int *i);
+void					ft_expand(t_node_ast *node, t_minishell *minishell);
+void					expand_env(t_node_ast *node, t_minishell *minishell);
+void					rm_empty(t_node_ast *node);
+void					split_no_quotes(char **args);
+void					strip_quotes(char **args);
 
 /*Redirections*/
 

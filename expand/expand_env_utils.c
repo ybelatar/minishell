@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 05:04:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/07 05:44:23 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 04:13:11 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ char	*variable_utils(char *str, int *i, t_minishell *minishell)
 
 char	*variable_env(char *str, int *i, t_minishell *minishell)
 {
-	int	start;
-
 	(*i)++;
 	if (ft_isdigit(str[*i]) || str[*i] == '@' || str[*i] == '!')
 	{
@@ -69,9 +67,9 @@ char	*double_quote(char *str, int *i, t_minishell *minishell)
 	while (str[*i] != '"')
 	{
 		if (str[*i] == '$')
-			res = ft_strjoin_free2(res, variable_env(str, &i, minishell));
+			res = ft_strjoin_free2(res, variable_env(str, i, minishell));
 		else
-			res = ft_strjoin_free2(res, double_quote_reg(str, &i));
+			res = ft_strjoin_free2(res, double_quote_reg(str, i));
 	}
 	(*i)++;
 	return (ft_strjoin_free2(res, ft_strdup("\"")));
