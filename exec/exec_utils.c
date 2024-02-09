@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 21:39:02 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/07 05:06:43 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 23:58:43 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,7 @@ char	*ft_get_bin(t_minishell *minishell, char *cmd)
 	char		*path;
 	int			index;
 
-	if (!ft_strncmp(cmd, "./", 2))
-		return (0);
-	if (!path_env)
+	if (!ft_strncmp(cmd, "./", 2) || !path_env)
 		return (0);
 	tab = ft_split(path_env, ':');
 	if (!tab)
@@ -84,7 +82,7 @@ char	*ft_get_bin(t_minishell *minishell, char *cmd)
 	index = 0;
 	while (tab[index])
 	{
-		path = ft_strjoin(tab[index], "/");
+		path = ft_strjoin(tab[index++], "/");
 		if (!path)
 			return (ft_free_tab(tab), (char *)0);
 		path = ft_strjoin_free(path, cmd);
@@ -93,7 +91,6 @@ char	*ft_get_bin(t_minishell *minishell, char *cmd)
 		if (access(path, X_OK) == 0)
 			return (ft_free_tab(tab), path);
 		free(path);
-		index++;
 	}
 	return (ft_free_tab(tab), (char *)0);
 }

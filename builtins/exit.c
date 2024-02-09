@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:03 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/08 02:38:00 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/08 09:12:52 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	exit_minishell(char **tab, t_minishell *minishell)
 	int	i;
 	int	exit_value;
 
-	printf("exit\n");
+	ft_dprintf(2, "exit\n");
 	if (!tab || !*tab)
 	{
 		clear_exit(minishell);

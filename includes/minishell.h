@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 05:12:32 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 05:17:07 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_redir_list
 {
 	t_redir_type		type;
 	char				*file;
+	int					fd;
 	struct s_redir_list	*next_redir;
 }						t_redir_list;
 
@@ -190,6 +191,10 @@ void					clear_pipe(t_minishell *minishell);
 t_pipe_list				*get_last_pipe(t_pipe_list *list);
 t_pipe_list				*remove_last_pipe(t_pipe_list *list);
 char					ft_get_last_char(const char *str);
+
+/*Builtins*/
+int						cd(char **args, t_minishell *minishell);
+int						echo(char **tab);
 
 /*Token builders*/
 

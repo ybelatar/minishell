@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:57:35 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 05:06:51 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 05:17:00 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,12 @@ void	ft_exec_cmd(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 			lst->out = -1;
 		}
 	}
+	// if (!ft_strcmp(ast->args[0], "cd"))
+	// {
+	// 	if (cmd->pipe_type)
+	// 		return ;
+	// 	g_status = cd(ast->args + 1, minishell);
+	// }
 	sig_fork(&pid);
 	if (pid < 0)
 	{
