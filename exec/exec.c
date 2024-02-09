@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:14:55 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 09:31:37 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:03:00 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	ft_exec_pipe(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 		clear_exit(minishell);
 	}
 	minishell->pipe_list = add_pipe_list(minishell, pipedes[0],
-		pipedes[1]);
+			pipedes[1]);
 	actual = (t_cmd){0, 1, 1, -1};
 	exec_fct[ast->left_child->type](minishell, ast->left_child, &actual);
 	actual.pipe_type = 2;
