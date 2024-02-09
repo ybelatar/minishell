@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:27:07 by pibosc            #+#    #+#             */
-/*   Updated: 2024/02/08 07:32:38 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 04:21:19 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,6 @@
 // 		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 // 	return (0);
 // }
-
-int	ft_putstr_fd(char *s, int fd)
-{
-	if (!s)
-	{
-		write(fd, "(null)", 6);
-		return (6);
-	}
-	else
-		write(fd, s, ft_strlen(s));
-	return (ft_strlen(s));
-}
 
 void	ft_close(int fd)
 {

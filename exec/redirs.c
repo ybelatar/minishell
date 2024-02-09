@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:16:44 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/08 23:38:26 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 04:34:36 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,12 @@ static int	ft_handle_in(t_minishell *minishell, t_cmd *cmd,
 		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
 		return (-1);
 	}
-	dup2(fd, 0);
+	if (dup2(fd, 0) < 0)
+	{
+		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
+		ft_close(fd);
+		return (-1);
+	}
 	ft_close(fd);
 	return (fd);
 }
@@ -43,7 +48,12 @@ static int	ft_handle_out(t_minishell *minishell, t_cmd *cmd,
 		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
 		return (-1);
 	}
-	dup2(fd, 1);
+	if (dup2(fd, 1) < 0)
+	{
+		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
+		ft_close(fd);
+		return (-1);
+	}
 	ft_close(fd);
 	return (fd);
 }
@@ -55,7 +65,12 @@ static int	ft_handle_heredoc(t_minishell *minishell, t_cmd *cmd,
 
 	(void)minishell;
 	(void)cmd;
-	dup2(redir->fd, 0);
+	if (dup2(redir->fd, 0) < 0)
+	{
+		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
+		ft_close(redir->fd);
+		return (-1);
+	}
 	ft_close(redir->fd);
 	return (heredoc.in);
 }
@@ -73,7 +88,12 @@ static int	ft_handle_append(t_minishell *minishell, t_cmd *cmd,
 		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
 		return (-1);
 	}
-	dup2(fd, 1);
+	if (dup2(fd, 1) < 0)
+	{
+		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
+		ft_close(fd);
+		return (-1);
+	}
 	close(fd);
 	return (fd);
 }

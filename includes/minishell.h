@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 05:17:07 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 04:08:38 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ typedef struct s_cmd
 	int					fd_in;
 	int					fd_out;
 	int					pipe_type;
+	int					pid;
 }						t_cmd;
 
 typedef struct s_heredoc
@@ -161,6 +162,8 @@ typedef struct s_heredoc
 
 typedef void			(*t_fct_ptr)(t_minishell *, t_node_ast *, t_cmd *);
 
+typedef int				(t_builtin)(char **, t_minishell *);
+
 /*Parser*/
 
 t_node_ast				*parser(t_token *tokens);
@@ -168,33 +171,36 @@ t_node_ast				*parser(t_token *tokens);
 /*exec*/
 
 void					ft_exec(t_minishell *minishell);
+void					ft_exec_child(t_minishell *minishell, t_node_ast *ast,
+							t_cmd *cmd);
 int						ft_open_redirs(t_minishell *minishell, t_cmd *cmd,
 							t_redir_list *redirs);
 void					ft_read(const char *limiter, int out);
 int						ft_read_heredoc(t_heredoc *heredoc,
 							const char *limiter);
-t_pid_list				*add_pid_list(t_pid_list *list, int pid);
+t_pid_list				*add_pid_list(t_minishell *minishell, int pid);
 void					clear_pid(t_minishell *minishell);
 char					*ft_get_bin(t_minishell *minishell, char *cmd);
 char					**ft_get_env(t_minishell *minishell);
 void					ft_free_tab(char **tab);
-void					ft_exec_cmd(t_minishell *minishell, t_node_ast *ast,
-							t_cmd *cmd);
-void					ft_exec_pipe(t_minishell *minishell, t_node_ast *ast,
-							t_cmd *cmd);
-void					ft_exec_or(t_minishell *minishell, t_node_ast *ast,
-							t_cmd *cmd);
-void					ft_exec_and(t_minishell *minishell, t_node_ast *ast,
-							t_cmd *cmd);
-t_pipe_list				*add_pipe_list(t_pipe_list *list, int in, int out);
+t_pipe_list				*add_pipe_list(t_minishell *minishell, int in, int out);
 void					clear_pipe(t_minishell *minishell);
 t_pipe_list				*get_last_pipe(t_pipe_list *list);
 t_pipe_list				*remove_last_pipe(t_pipe_list *list);
 char					ft_get_last_char(const char *str);
+void					ft_wait(t_minishell *minishell);
+void					clear_exit(t_minishell *minishell);
+void					ft_exec_builtin(t_minishell *minishell, t_node_ast *ast,
+							t_cmd *cmd, t_builtin *fct);
 
 /*Builtins*/
 int						cd(char **args, t_minishell *minishell);
-int						echo(char **tab);
+int						echo(char **args, t_minishell *minishell);
+int						env(char **args, t_minishell *minishell);
+int						exit_minishell(char **args, t_minishell *minishell);
+int						export(char **args, t_minishell *minishell);
+int						pwd(char **args, t_minishell *minishell);
+int						unset(char **args, t_minishell *minishell);
 
 /*Token builders*/
 

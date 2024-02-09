@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/06 21:39:02 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/08 23:58:43 by wouhliss         ###   ########.fr       */
+/*   Created: 2024/02/09 00:18:02 by wouhliss          #+#    #+#             */
+/*   Updated: 2024/02/09 04:14:01 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,32 @@ char	*ft_get_bin(t_minishell *minishell, char *cmd)
 		free(path);
 	}
 	return (ft_free_tab(tab), (char *)0);
+}
+
+void	ft_wait(t_minishell *minishell)
+{
+	t_pid_list	*current;
+	int			status;
+
+	if (!minishell->pid_list)
+		return ;
+	current = minishell->pid_list;
+	while (current)
+	{
+		if (current->pid < 0)
+		{
+			current = current->next;
+			continue ;
+		}
+		waitpid(current->pid, &status, 0);
+		if (WIFEXITED(status))
+			g_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+		{
+			ft_dprintf(2, "Quit (core dumped)\n");
+			g_status = 131;
+		}
+		current = current->next;
+	}
+	clear_pid(minishell);
 }

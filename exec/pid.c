@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 22:10:40 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/08 03:32:58 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/09 03:18:33 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,24 @@ t_pid_list	*new_pid_list(int pid)
 	return (new);
 }
 
-t_pid_list	*add_pid_list(t_pid_list *list, int pid)
+t_pid_list	*add_pid_list(t_minishell *minishell, int pid)
 {
 	t_pid_list	*new;
 	t_pid_list	*current;
 
 	new = new_pid_list(pid);
 	if (!new)
-		return (list);
-	if (!list)
+	{
+		ft_dprintf(2, "minishell: malloc error");
+		clear_exit(minishell);
+	}
+	if (!minishell || !minishell->pid_list)
 		return (new);
-	current = list;
+	current = minishell->pid_list;
 	while (current->next)
 		current = current->next;
 	current->next = new;
-	return (list);
+	return (minishell->pid_list);
 }
 
 void	clear_pid(t_minishell *minishell)
