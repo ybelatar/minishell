@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:18:02 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 05:48:40 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:16:26 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,15 @@ char	**ft_get_env(t_minishell *minishell)
 	index = 0;
 	while (current)
 	{
-		env[index] = ft_strjoin(current->key, "=");
-		if (!env[index])
-			return (ft_free_tab(env), (char **)0);
-		env[index] = ft_strjoin_free(env[index], current->value);
-		if (!env[index])
-			return (ft_free_tab(env), (char **)0);
-		++index;
+		if (!current->unset && current->value)
+		{
+			env[index] = ft_strjoin(current->key, "=");
+			if (!env[index])
+				return (ft_free_tab(env), (char **)0);
+			env[index] = ft_strjoin_free(env[index], current->value);
+			if (!env[index++])
+				return (ft_free_tab(env), (char **)0);
+		}
 		current = current->next_env;
 	}
 	env[index] = 0;

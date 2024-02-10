@@ -3,41 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   expand_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 04:55:52 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 01:10:01 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 13:16:36 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *single_quote(char *str, int *i)
+char	*single_quote(char *str, int *i)
 {
-    int start;
+	int	start;
 
-    start = *i;
-    (*i)++;
-    while (str[*i] != '\'')
-        (*i)++;
-    (*i)++;
-    return (ft_substr(str, start, *i - start));
+	start = *i;
+	(*i)++;
+	while (str[*i] != '\'')
+		(*i)++;
+	(*i)++;
+	return (ft_substr(str, start, *i - start));
 }
 
-char *normal(char *str, int *i)
+char	*normal(char *str, int *i)
 {
-    int start;
+	int	start;
 
-    start = *i;
-    while (str[*i] && str[*i] != '"' && str[*i] != '$' && str[*i] != '\'')
-        (*i)++;
-    return (ft_substr(str, start, *i - start));
+	start = *i;
+	while (str[*i] && str[*i] != '"' && str[*i] != '$' && str[*i] != '\'')
+		(*i)++;
+	return (ft_substr(str, start, *i - start));
 }
 
-char *expand_env_one(char *str, t_minishell *minishell, int led)
+char	*expand_env_one(char *str, t_minishell *minishell, int led)
 {
-    char *res;
-    int i;
+	char	*res;
+	int		i;
 
     i = 0;
     res = NULL;
@@ -58,31 +58,31 @@ char *expand_env_one(char *str, t_minishell *minishell, int led)
 	// }
 	if (led)
 		free(str);
-    return (res);
+	return (res);
 }
 
-void expand_env_redir(t_redir_list *redir, t_minishell *minishell)
+void	expand_env_redir(t_redir_list *redir, t_minishell *minishell)
 {
 	redir->pre_file = redir->file;
 	// if (!ft_strcmp(redir->file, "\"\"") || !ft_strcmp(redir->file, "''"))
 	// {
-	// 	// free(redir->file);	
+	// 	// free(redir->file);
 	// 	redir->file = 0;
 	// }
 	// else
 	redir->file = expand_env_one(redir->file, minishell, 0);
 }
 
-void expand_env(t_node_ast *node, t_minishell *minishell)
+void	expand_env(t_node_ast *node, t_minishell *minishell)
 {
-    int i;
+	int	i;
 
 	if (!node->args)
 		return ;
-    i = 0;
-    while (node->args[i])
-    {
-        node->args[i] = expand_env_one(node->args[i], minishell, 1);
-        i++;
-    }
+	i = 0;
+	while (node->args[i])
+	{
+		node->args[i] = expand_env_one(node->args[i], minishell, 1);
+		i++;
+	}
 }

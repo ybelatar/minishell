@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 18:53:09 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 06:41:25 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 10:43:29 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ void	ft_flushbuff(t_print *print)
 void	ft_putchar(const char c, t_print *print)
 {
 	if (print->type == 2)
+	{
+		print->size++;
+		return ;
+	}
+	if (print->type == 3)
 	{
 		print->str[print->len++] = c;
 		return ;

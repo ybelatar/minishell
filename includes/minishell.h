@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 07:28:42 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 13:16:50 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ typedef struct s_env
 {
 	char				*key;
 	char				*value;
+	int					old;
+	int					unset;
 	struct s_env		*next_env;
 }						t_env;
 
@@ -283,7 +285,7 @@ void					update_env(char *key, char *value,
 							t_minishell *minishell);
 void					delete_env(char *key, t_env *env,
 							t_minishell *minishell);
-t_env					*new_env(char *key, char *value, int i);
+t_env					*new_env(char *key, char *value, int i, int old);
 char					*get_name(char *str, int *ptr_i);
 void					display_env(t_env *env);
 char					*ft_itoa(int n);

@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:27:07 by pibosc            #+#    #+#             */
-/*   Updated: 2024/02/10 07:21:25 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:15:45 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*get_env(char *key, t_env *env)
 	current = env;
 	while (current)
 	{
-		if (!ft_strcmp(current->key, key))
+		if (!ft_strcmp(current->key, key) && !current->unset)
 			return (current->value);
 		current = current->next_env;
 	}
@@ -58,7 +58,7 @@ char	ft_get_last_char(const char *str)
 void	ft_prompt(t_minishell *minishell)
 {
 	char		cwd[PATH_MAX];
-	char		s[PATH_MAX + 32];
+	char		s[PATH_MAX + 33];
 	char		*pwd;
 	char		c[2];
 
