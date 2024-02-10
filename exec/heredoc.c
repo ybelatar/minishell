@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:44:00 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/10 02:40:01 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 08:13:52 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	ft_get_rand(t_heredoc *heredoc)
 	heredoc->path = heredoc->rand;
 }
 
-int	ft_read_heredoc(t_heredoc *heredoc, const char *limiter)
+int	ft_read_heredoc(t_minishell *minishell, t_heredoc *heredoc, char *limiter)
 {
 	ft_get_rand(heredoc);
 	if (!heredoc->path)
@@ -62,7 +62,7 @@ int	ft_read_heredoc(t_heredoc *heredoc, const char *limiter)
 		return (1);
 	}
 	unlink(heredoc->path);
-	ft_read(limiter, heredoc->out);
+	ft_read(minishell, limiter, heredoc->out);
 	return (0);
 }
 

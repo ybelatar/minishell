@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 04:55:52 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 01:10:01 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 07:38:09 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,8 @@ char *expand_env_one(char *str, t_minishell *minishell, int led)
         else
             res = ft_strjoin_free2(res, normal(str, &i));
     }
-	// if (!ft_strcmp(str, "~") && )
-	// {
-		
-	// }
+	if (!ft_strcmp(str, "~")/* && (get_env("HOME", minishell->env) || getenv("HOME"))*/)
+		res = expand_tild(res, minishell);
 	if (led)
 		free(str);
     return (res);

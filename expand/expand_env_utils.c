@@ -6,11 +6,25 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 05:04:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 09:09:52 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 07:49:17 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char *expand_tild(char *str, t_minishell *minishell)
+{
+	char *res;
+
+	(void)str;
+	res = ft_strdup(get_env("HOME", minishell->env));
+	if (res)
+		return (free(str), res);
+	res = ft_strdup(minishell->home);
+	if (res)
+		return (free(str), res);
+	return (str);
+}
 
 char	*variable_utils(char *str, int *i, t_minishell *minishell)
 {

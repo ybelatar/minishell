@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 21:37:04 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 09:44:17 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 08:01:21 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ t_redir_type	get_redir_type(t_token_type type)
 	return (R_IN);
 }
 
-int	add_redir(t_node_ast *node, t_token **token)
+int	add_redir(t_minishell *minishell, t_node_ast *node, t_token **token)
 {
 	t_token_type	type;
 	t_redir_list	*new;
 
 	type = (*token)->type;
 	move_def_token(token, 1);
-	new = create_redir(get_redir_type(type), (*token)->content);
+	new = create_redir(minishell, get_redir_type(type), (*token)->content);
 	if (!new)
 		return (perror("Error\n"), 0);
 	add_last_redir(&(node->redirs), new);
@@ -40,7 +40,7 @@ int	add_redir(t_node_ast *node, t_token **token)
 	return (1);
 }
 
-t_redir_list	*create_redir(t_redir_type type, char *file)
+t_redir_list	*create_redir(t_minishell *minishell, t_redir_type type, char *file)
 {
 	t_redir_list	*redir;
 	t_heredoc		heredoc;
@@ -55,7 +55,7 @@ t_redir_list	*create_redir(t_redir_type type, char *file)
 		return (free(redir), NULL);
 	if (type == R_HEREDOC)
 	{
-		if (!ft_read_heredoc(&heredoc, file))
+		if (!ft_read_heredoc(minishell, &heredoc, file))
 			redir->fd = heredoc.in;
 	}
 	return (redir);

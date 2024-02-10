@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 07:28:42 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 08:13:38 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,7 @@ typedef struct s_pipe_list
 typedef struct s_minishell
 {
 	char				*cmd_line;
-	char				*prompt;
-	// char				*home;
+	char				*home;
 	t_env				*env;
 	t_pretoken			*pretokens;
 	t_token				*tokens;
@@ -173,7 +172,7 @@ typedef					int(t_builtin)(char **, t_minishell *);
 
 /*Parser*/
 
-t_node_ast				*parser(t_token *tokens);
+t_node_ast				*parser(t_minishell *minishell, t_token *tokens);
 
 /*exec*/
 
@@ -182,9 +181,10 @@ void					ft_exec_child(t_minishell *minishell, t_node_ast *ast,
 							t_cmd *cmd);
 int						ft_open_redirs(t_minishell *minishell, t_cmd *cmd,
 							t_redir_list *redirs);
-void					ft_read(const char *limiter, int out);
-int						ft_read_heredoc(t_heredoc *heredoc,
-							const char *limiter);
+void					ft_read(t_minishell *minishell, char *limiter,
+							int out);
+int						ft_read_heredoc(t_minishell *minishell,
+							t_heredoc *heredoc, char *limiter);
 t_pid_list				*add_pid_list(t_minishell *minishell, int pid);
 void					clear_pid(t_minishell *minishell);
 char					*ft_get_bin(t_minishell *minishell, char *cmd);
@@ -244,11 +244,17 @@ void					strip_quotes_redir(t_redir_list *redir);
 void					nullify_status(void);
 int						is_ambiguous(t_redir_list *redir);
 void					ft_recexpand(t_node_ast *node, t_minishell *minishell);
+char					*expand_tild(char *str, t_minishell *minishell);
+char					*expand_env_one(char *str, t_minishell *minishell,
+							int led);
+char					*without_quotes(char *str, int led);
 
 /*Redirections*/
 
-int						add_redir(t_node_ast *node, t_token **token);
-t_redir_list			*create_redir(t_redir_type type, char *file);
+int						add_redir(t_minishell *minishell, t_node_ast *node,
+							t_token **token);
+t_redir_list			*create_redir(t_minishell *minishell, t_redir_type type,
+							char *file);
 void					add_last_redir(t_redir_list **redirs,
 							t_redir_list *new);
 

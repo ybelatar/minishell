@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 21:00:44 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/05 18:10:55 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 08:04:44 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_node_ast	*parse_expression(t_token **tokens, int min_precedence);
+t_node_ast	*parse_expression(t_minishell *minishell, t_token **tokens, int min_precedence);
 
-t_node_ast	*parse_command(t_token **token)
+t_node_ast	*parse_command(t_minishell *minishell, t_token **token)
 {
 	t_node_ast	*parsed;
 
@@ -29,12 +29,12 @@ t_node_ast	*parse_command(t_token **token)
 			move_def_token(token, 0);
 		}
 		else
-			add_redir(parsed, token);
+			add_redir(minishell, parsed, token);
 	}
 	return (parsed);
 }
 
-t_node_ast	*parse_term(t_token **token)
+t_node_ast	*parse_term(t_minishell *minishell, t_token **token)
 {
 	t_node_ast	*parsed;
 
@@ -43,12 +43,12 @@ t_node_ast	*parse_term(t_token **token)
 	if ((*token)->type == OPEN_P)
 	{
 		move_def_token(token, 1);
-		parsed = parse_expression(token, 0);
+		parsed = parse_expression(minishell, token, 0);
 		move_def_token(token, 1);
 		return (parsed);
 	}
 	else
-		return (parse_command(token));
+		return (parse_command(minishell, token));
 }
 
 t_node_ast	*fuse_node(t_node_type type, t_node_ast *left_node,
@@ -65,7 +65,7 @@ t_node_ast	*fuse_node(t_node_type type, t_node_ast *left_node,
 	return (node);
 }
 
-t_node_ast	*parse_expression(t_token **tokens, int min_precedence)
+t_node_ast	*parse_expression(t_minishell *minishell, t_token **tokens, int min_precedence)
 {
 	t_node_ast		*left_node;
 	t_node_ast		*right_node;
@@ -73,7 +73,7 @@ t_node_ast	*parse_expression(t_token **tokens, int min_precedence)
 
 	if (!tokens)
 		return (0);
-	left_node = parse_term(tokens);
+	left_node = parse_term(minishell, tokens);
 	if (!left_node)
 		return (NULL);
 	while (*tokens && is_operator(*tokens)
@@ -81,7 +81,7 @@ t_node_ast	*parse_expression(t_token **tokens, int min_precedence)
 	{
 		ope_type = (*tokens)->type;
 		move_def_token(tokens, 1);
-		right_node = parse_expression(tokens, get_precedence(ope_type) + 1);
+		right_node = parse_expression(minishell, tokens, get_precedence(ope_type) + 1);
 		if (!right_node)
 			return (left_node);
 		left_node = fuse_node(get_type(ope_type), left_node, right_node);
@@ -91,13 +91,13 @@ t_node_ast	*parse_expression(t_token **tokens, int min_precedence)
 	return (left_node);
 }
 
-t_node_ast	*parser(t_token *tokens)
+t_node_ast	*parser(t_minishell *minishell, t_token *tokens)
 {
 	t_node_ast	*ast;
 
 	if (!tokens)
 		return (0);
-	ast = parse_expression(&tokens, 0);
+	ast = parse_expression(minishell, &tokens, 0);
 	if (!ast)
 		return (clear_tokens(&tokens), NULL);
 	clear_tokens(&tokens);
