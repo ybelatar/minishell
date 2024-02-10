@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 14:56:35 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 06:33:25 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 10:46:57 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static inline void	ft_parseflag(char c, va_list arg, t_print *print)
 	}
 }
 
-char	*ft_sprintf(char *buff, const char *s, ...)
+char	*ft_mprintf(const char *s, ...)
 {
 	const char	*str;
 	va_list		args;
@@ -43,6 +43,48 @@ char	*ft_sprintf(char *buff, const char *s, ...)
 
 	str = s;
 	print.type = 2;
+	print.len = 0;
+	print.size = 0;
+	va_start(args, s);
+	while (*str)
+	{
+		if (*str == '%' && *(str + 1) && *(str + 1) != '%')
+			ft_parseflag(*(++str), args, &print);
+		else if (*str == '%' && *(str + 1) == '%')
+			ft_putchar(*(++str), &print);
+		else
+			ft_putchar(*str, &print);
+		++str;
+	}
+	va_end(args);
+	print.type = 3;
+	print.str = malloc(print.size + 1);
+	if (!print.str)
+		return (0);
+	va_start(args, s);
+	while (*s)
+	{
+		if (*s == '%' && *(s + 1) && *(s + 1) != '%')
+			ft_parseflag(*(++s), args, &print);
+		else if (*s == '%' && *(s + 1) == '%')
+			ft_putchar(*(++s), &print);
+		else
+			ft_putchar(*s, &print);
+		++s;
+	}
+	va_end(args);
+	print.str[print.len] = 0;
+	return (print.str);
+}
+
+char	*ft_sprintf(char *buff, const char *s, ...)
+{
+	const char	*str;
+	va_list		args;
+	t_print		print;
+
+	str = s;
+	print.type = 3;
 	print.len = 0;
 	print.size = 0;
 	print.str = buff;
@@ -58,22 +100,6 @@ char	*ft_sprintf(char *buff, const char *s, ...)
 		++str;
 	}
 	va_end(args);
-	// print.type = 3;
-	// print.str = malloc(print.size + 1);
-	// if (!print.str)
-	// 	return (0);
-	// va_start(args, s);
-	// while (*s)
-	// {
-	// 	if (*s == '%' && *(s + 1) && *(s + 1) != '%')
-	// 		ft_parseflag(*(++s), args, &print);
-	// 	else if (*s == '%' && *(s + 1) == '%')
-	// 		ft_putchar(*(++s), &print);
-	// 	else
-	// 		ft_putchar(*s, &print);
-	// 	++s;
-	// }
-	// va_end(args);
 	print.str[print.len] = 0;
 	return (print.str);
 }

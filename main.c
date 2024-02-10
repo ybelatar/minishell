@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 08:00:38 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 23:06:48 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	display_tab(char **tab)
 
 int		g_status;
 
-t_env	*new_env(char *key, char *value, int i)
+t_env	*new_env(char *key, char *value, int i, int old)
 {
 	t_env	*new;
 
@@ -113,6 +113,8 @@ t_env	*new_env(char *key, char *value, int i)
 		new->value = ft_strdup(getenv(key));
 	else
 		new->value = value;
+	new->old = old;
+	new->unset = 0;
 	new->next_env = NULL;
 	return (new);
 }
@@ -146,7 +148,7 @@ t_env	*copy_env(char **env)
 	while (env[i])
 	{
 		env_add_back(&cpy, new_env(ft_substr(env[i], 0, ft_strchri(env[i],
-						'=')), NULL, 1));
+						'=')), NULL, 1, 1));
 		i++;
 	}
 	return (cpy);

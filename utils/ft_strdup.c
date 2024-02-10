@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:27:13 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 07:46:41 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 23:08:29 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strdup(char *s)
 	char	*res;
 
 	if (!s)
-		return (NULL);
+		return (0);
 	res = malloc((ft_strlen(s) + 1) * sizeof(char));
 	if (!res)
 		return (NULL);

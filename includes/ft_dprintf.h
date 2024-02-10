@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 18:45:33 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 06:30:48 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 10:47:21 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_print
 int			ft_printf(const char *str, ...);
 char		*ft_sprintf(char *buff, const char *s, ...);
 int			ft_dprintf(int fd, const char *str, ...);
+char		*ft_mprintf(const char *s, ...);
 
 void		ft_flushbuff(t_print *print);
 void		ft_putchar(const char c, t_print *print);
