@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:16:44 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 09:45:54 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 02:10:25 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static int	ft_handle_out(t_redir_list *redir)
 
 static int	ft_handle_heredoc(t_redir_list *redir)
 {
-
 	if (dup2(redir->fd, 0) < 0)
 	{
 		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));

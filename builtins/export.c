@@ -6,43 +6,36 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:07 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 04:54:37 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 06:03:17 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	display_export(t_env *env)
+static inline int	display_export(t_minishell *minishell, t_env *env)
 {
-	int	len;
+	char	*s;
 
 	if (!env)
 		return (0);
 	while (env)
 	{
-		if (write(1, "export ", 7) < 7)
-			return (ft_dprintf(2, "minishell: export: write error: %s\n",
-					strerror(errno)), 125);
-		len = ft_strlen(env->key);
-		if (write(1, env->key, len) < len)
-			return (ft_dprintf(2, "minishell: export: write error: %s\n",
-					strerror(errno)), 125);
-		if (write(1, "=\"", 2) < 2)
-			return (ft_dprintf(2, "minishell: export: write error: %s\n",
-					strerror(errno)), 125);
-		len = ft_strlen(env->value);
-		if (write(1, env->value, len) < len)
-			return (ft_dprintf(2, "minishell: export: write error: %s\n",
-					strerror(errno)), 125);
-		if (write(1, "\"\n", 2) < 2)
-			return (ft_dprintf(2, "minishell: export: write error: %s\n",
-					strerror(errno)), 125);
+		if (env->value)
+			s = ft_sprintf("export %s=\"%s\"\n", env->key, env->value);
+		else
+			s = ft_sprintf("export %s\n", env->key, env->value);
+		if (!s)
+			return (clear_exit(minishell), ft_dprintf(2,
+					"minishell: malloc error\n"), 3);
+		if (ft_write(s, ft_strlen(s), "export"))
+			return (free(s), 125);
+		free(s);
 		env = env->next_env;
 	}
 	return (0);
 }
 
-int	print_justincase(char *str)
+static inline int	print_justincase(char *str)
 {
 	int	i;
 
@@ -66,12 +59,12 @@ int	print_justincase(char *str)
 	return (0);
 }
 
-void	print_error(char *arg)
+static inline void	print_error(char *arg)
 {
 	ft_dprintf(2, "minishell: export: `%s': not a valid identifier\n", arg);
 }
 
-int	export_one(char *arg, t_minishell *minishell)
+static inline int	export_one(char *arg, t_minishell *minishell)
 {
 	int		i;
 	char	*linus;
@@ -104,7 +97,7 @@ int	export(char **args, t_minishell *minishell)
 	int	ret;
 
 	if (!*args)
-		return (display_export(minishell->env), 0);
+		return (display_export(minishell, minishell->env), 0);
 	i = 0;
 	ret = 0;
 	while (args[i])

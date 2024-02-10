@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 00:50:04 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 05:16:19 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ t_pretoken	*pretokenization(char *str)
 	i = 0;
 	if (!str)
 		return (NULL);
+	if (!check_quotes(str) || !check_and(str))
+		g_status = 2;
 	if (!check_quotes(str))
 		return (ft_dprintf(2,
 				"minishell: syntax error because of unclosed quote\n"), NULL);

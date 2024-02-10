@@ -6,26 +6,30 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:45:58 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 04:12:01 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 05:51:01 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_option(char *arg)
+int	ft_write(const char *str, int len, const char *cmd)
 {
-	int	i;
+	if (write(1, str, len) < len)
+		return (ft_dprintf(2, "minishell: %s: write error: %s\n",
+				cmd, strerror(errno)), 125);
+	return (0);
+}
 
-	if (ft_strlen(arg) < 2)
+static inline int	is_option(const char *arg)
+{
+	if (*arg != '-')
 		return (0);
-	i = 0;
-	if (arg[i++] != '-')
-		return (0);
-	while (arg[i])
+	++arg;
+	while (*arg)
 	{
-		if (arg[i] != 'n')
+		if (*arg != 'n')
 			return (0);
-		i++;
+		++arg;
 	}
 	return (1);
 }
@@ -34,11 +38,10 @@ int	echo(char **args, t_minishell *minishell)
 {
 	int	led;
 	int	i;
-	int	len;
 
 	(void)minishell;
 	if (!args || !*args)
-		return (0);
+		return (ft_write("\n", 1, "echo"));
 	led = 0;
 	i = 0;
 	while (args[i] && is_option(args[i]))
@@ -48,19 +51,13 @@ int	echo(char **args, t_minishell *minishell)
 	}
 	while (args[i])
 	{
-		len = ft_strlen(args[i]);
-		if (write(1, args[i], len) < len)
-			return (ft_dprintf(2, "minishell: echo: write error: %s\n",
-					strerror(errno)), 125);
-		if (args[i + 1])
-			if (!write(1, " ", 1))
-				return (ft_dprintf(2, "minishell: echo: write error: %s\n",
-						strerror(errno)), 125);
+		if (ft_write(args[i], ft_strlen(args[i]), "echo"))
+			return (125);
+		if (args[i + 1] && ft_write(" ", 1, "echo"))
+			return (125);
 		i++;
 	}
-	if (!led)
-		if (!write(1, "\n", 1))
-			return (ft_dprintf(2, "minishell: echo: write error: %s\n",
-					strerror(errno)), 125);
+	if (!led && ft_write("\n", 1, "echo"))
+		return (125);
 	return (0);
 }

@@ -6,22 +6,11 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:23 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 04:21:24 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 05:35:45 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	display_env(t_env *env)
-{
-	if (!env)
-		return ;
-	while (env)
-	{
-		ft_dprintf(1, "%s=%s\n", env->key, env->value);
-		env = env->next_env;
-	}
-}
 
 void	update_env(char *key, char *value, t_minishell *minishell)
 {
