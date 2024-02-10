@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 07:23:56 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 07:28:42 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <linux/limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -29,7 +30,9 @@
 
 # define REDIR_HEREDOC -42
 # define BUFFER_SIZE 1024
-# define HEREDOC_EOF "minishell: warning: here-document delimited by end-of-file (wanted `%s')\n"
+# define H "%s warning: here-document delimited by end-of-file (wanted `%s')\n"
+# define PROMPT_ME_S "\1\e[1;91m\xE2\x9E\2\x9C  \1\e[1;96m\2Minishell\1\e[0m\2 "
+# define PROMPT_ME_NS "\1\e[1;92m\xE2\x9E\2\x9C  \1\e[1;96m\2Minishell\1\e[0m\2 "
 
 extern int				g_status;
 
@@ -205,6 +208,7 @@ int						exit_minishell(char **args, t_minishell *minishell);
 int						export(char **args, t_minishell *minishell);
 int						pwd(char **args, t_minishell *minishell);
 int						unset(char **args, t_minishell *minishell);
+int						ft_write(const char *str, int len, const char *cmd);
 
 /*Token builders*/
 
@@ -306,7 +310,7 @@ char					*ft_strjoin_free(char *s1, char *s2);
 char					*ft_substr(char *s, unsigned int start, size_t len);
 char					*ft_substr_free(char *s, unsigned int start,
 							size_t len);
-int						ft_strlen(char *str);
+int						ft_strlen(const char *str);
 int						ft_isalnum(int c);
 int						ft_strcmp(const char *s1, const char *s2);
 void					*ft_calloc(size_t nmemb, size_t size);
@@ -324,7 +328,8 @@ int						ft_isdigit(int c);
 void					clear_pretokens(t_pretoken **pretokens);
 void					clear_tokens(t_token **tokens);
 void					clear_tab(char **tab);
-void					clear_redirs(t_redir_list **redirs);
+void					clear_redirs(t_node_ast *ast);
+void					clear_all_redirs(t_node_ast *lst);
 void					clear_env(t_env *env);
 void					clear_ast(t_node_ast **ast);
 void					move_def(t_pretoken **pretoken, int i);

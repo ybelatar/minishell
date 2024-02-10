@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:42:39 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 08:15:32 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 02:49:21 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,36 @@ void	clear_ast(t_node_ast **ast)
 	if ((*ast)->type == T_CMD)
 	{
 		clear_tab((*ast)->args);
-		clear_redirs(&((*ast)->redirs));
+		clear_redirs(*ast);
 	}
 	free(*ast);
 	*ast = 0;
 	clear_ast(&tmp_l);
 	clear_ast(&tmp_r);
+}
+
+void	clear_all_redirs(t_node_ast *lst)
+{
+	t_node_ast		*ast;
+	t_redir_list	*current;
+	t_redir_list	*tmp;
+
+	if (!lst)
+		return ;
+	ast = lst;
+	current = ast->redirs;
+	while (current)
+	{
+		tmp = current->next_redir;
+		ft_close(current->fd);
+		free(current->file);
+		free(current->pre_file);
+		free(current);
+		current = tmp;
+	}
+	ast->redirs = 0;
+	clear_all_redirs(lst->left_child);
+	clear_all_redirs(lst->right_child);
 }
 
 void	move_def(t_pretoken **pretoken, int i)

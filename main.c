@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 01:11:19 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 07:28:25 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,9 +159,6 @@ int	routine(t_minishell *minishell)
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, SIG_IGN);
 		ft_prompt(minishell);
-		minishell->cmd_line = readline(minishell->prompt);
-		free(minishell->prompt);
-		minishell->prompt = 0;
 		if (!minishell->cmd_line)
 			return (clear_env(minishell->env), clear_pid(minishell),
 				ft_dprintf(2, "exit\n"), 0);
@@ -184,8 +181,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	minishell = (t_minishell){0, 0, copy_env(env), 0, 0, 0, 0, -1, -1, 0, 0};
-	// minishell.home = get_env("HOME", minishell.env);
+	minishell = (t_minishell){0, copy_env(env), 0, 0, 0, 0, -1, -1, 0, 0};
 	routine(&minishell);
 	return (g_status);
 }

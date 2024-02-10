@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:01 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 02:53:28 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 06:02:52 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	env(char **args, t_minishell *minishell)
 {
-	t_env	*env;
-	int		len;
+	t_env		*env;
+	char		*s;
 
 	(void)args;
 	if (!minishell->env)
@@ -23,20 +23,18 @@ int	env(char **args, t_minishell *minishell)
 	env = minishell->env;
 	while (env)
 	{
-		len = ft_strlen(env->key);
-		if (write(1, env->key, len) < len)
-			return (ft_dprintf(2, "minishell: env: write error: %s\n",
-				strerror(errno)), 125);
-		if (!write(1, "=", 1))
-			return (ft_dprintf(2, "minishell: env: write error: %s\n",
-				strerror(errno)), 125);
-		len = ft_strlen(env->value);
-		if (write(1, env->value, len) < len)
-			return (ft_dprintf(2, "minishell: env: write error: %s\n",
-				strerror(errno)), 125);
-		if (!write(1, "\n", 1))
-			return (ft_dprintf(2, "minishell: env: write error: %s\n",
-				strerror(errno)), 125);
+		if (!env->value)
+		{
+			env = env->next_env;
+			continue ;
+		}
+		s = ft_sprintf("%s=%s\n", env->key, env->value);
+		if (!s)
+			return (clear_exit(minishell), ft_dprintf(2,
+					"minishell: malloc error\n"), 3);
+		if (ft_write(s, ft_strlen(s), "env"))
+			return (free(s), 125);
+		free(s);
 		env = env->next_env;
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 04:19:55 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 08:35:52 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 02:44:45 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,22 @@ void	clear_env(t_env *env)
 	}
 }
 
-void	clear_redirs(t_redir_list **redirs)
+void	clear_redirs(t_node_ast *ast)
 {
 	t_redir_list	*tmp;
+	t_redir_list	*current;
 
-	if (!redirs || !*redirs)
+	if (!ast)
 		return ;
-	while (*redirs)
+	current = ast->redirs;
+	while (current)
 	{
-		tmp = (*redirs)->next_redir;
-		free((*redirs)->file);
-		free((*redirs)->pre_file);
-		free(*redirs);
-		*redirs = tmp;
+		tmp = current->next_redir;
+		ft_close(current->fd);
+		free(current->file);
+		free(current->pre_file);
+		free(current);
+		current = tmp;
 	}
+	ast->redirs = 0;
 }

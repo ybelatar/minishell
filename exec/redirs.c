@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:16:44 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 23:44:09 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 07:29:00 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static int	ft_handle_out(t_redir_list *redir)
 
 static int	ft_handle_heredoc(t_redir_list *redir)
 {
-
 	if (dup2(redir->fd, 0) < 0)
 	{
 		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));

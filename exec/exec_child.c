@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:19:57 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 09:32:23 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 05:19:05 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static inline void	sig_fork(t_cmd *cmd)
-{
-	cmd->pid = fork();
-	if (!cmd->pid)
-	{
-		signal(SIGINT, fork_sig_handler);
-		signal(SIGQUIT, fork_sig_handler);
-	}
-}
 
 static inline int	ft_handle_err(t_node_ast *ast)
 {
@@ -56,6 +46,7 @@ static inline int	ft_child(t_minishell *minishell, t_cmd *cmd,
 	if (ft_open_redirs(minishell, cmd, ast->redirs))
 		return (clear_ast(&minishell->ast), clear_env(minishell->env),
 			clear_pid(minishell), 0);
+	clear_all_redirs(minishell->ast);
 	env = ft_get_env(minishell);
 	bin = 0;
 	status = 0;
@@ -103,17 +94,18 @@ static inline void	ft_handle_pipe(t_minishell *minishell, t_cmd *cmd,
 	}
 }
 
-void	ft_exec_child(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
+static inline void	sig_fork(t_minishell *minishell, int *pipedes,
+		t_node_ast *ast, t_cmd *cmd)
 {
-	int	pipedes[2];
-
-	pipedes[0] = -1;
-	pipedes[1] = -1;
-	ft_handle_pipe(minishell, cmd, pipedes);
-	sig_fork(cmd);
+	cmd->pid = fork();
+	if (!cmd->pid)
+	{
+		signal(SIGINT, fork_sig_handler);
+		signal(SIGQUIT, fork_sig_handler);
+	}
 	if (cmd->pid < 0)
 		return (ft_dprintf(2, "minishell: fork error"), clear_exit(minishell));
-	else if (!cmd->pid)
+	if (!cmd->pid)
 	{
 		clear_pipe(minishell);
 		if (pipedes[0] > 0)
@@ -128,8 +120,18 @@ void	ft_exec_child(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 		}
 		exit(ft_child(minishell, cmd, ast));
 	}
-	if (cmd->pid)
+	else if (cmd->pid)
 		minishell->pid_list = add_pid_list(minishell, cmd->pid);
+}
+
+void	ft_exec_child(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
+{
+	int	pipedes[2];
+
+	pipedes[0] = -1;
+	pipedes[1] = -1;
+	ft_handle_pipe(minishell, cmd, pipedes);
+	sig_fork(minishell, pipedes, ast, cmd);
 	ft_close(pipedes[0]);
 	ft_close(pipedes[1]);
 }

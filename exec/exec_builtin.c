@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 02:54:04 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 04:48:44 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 01:57:56 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,16 @@ void	ft_exec_builtin(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd,
 			dup2(minishell->out, 1);
 			ft_close(minishell->in);
 			ft_close(minishell->out);
+			minishell->in = -1;
+			minishell->out = -1;
 		}
 		g_status = (*fct)(ast->args + 1, minishell);
 		dup2(minishell->in, 0);
 		dup2(minishell->out, 1);
 		ft_close(minishell->in);
 		ft_close(minishell->out);
+		minishell->in = -1;
+		minishell->out = -1;
 		minishell->pid_list = add_pid_list(minishell, -1);
 	}
 }

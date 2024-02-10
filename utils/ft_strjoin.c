@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:27:01 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 09:08:33 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 06:03:47 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_strlen(char *str)
+int ft_strlen(const char *str)
 {
-	int i;
+	const char	*s;
 
 	if (!str)
 		return (0);
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	s = str;
+	while (*s)
+		++s;
+	return (s - str);
 }
 
 char	*ft_strjoin(char *s1, char *s2)

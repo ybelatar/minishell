@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 18:45:33 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 01:43:50 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/10 06:30:48 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 # include <stdarg.h>
 # include <stdint.h>
+# include <stdio.h>
+# include <stdlib.h>
 # include <unistd.h>
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
@@ -24,12 +26,15 @@
 typedef struct s_print
 {
 	char	buff[BUFFER_SIZE];
+	char	*str;
 	int		fd;
 	int		len;
 	int		size;
+	int		type;
 }			t_print;
 
 int			ft_printf(const char *str, ...);
+char		*ft_sprintf(char *buff, const char *s, ...);
 int			ft_dprintf(int fd, const char *str, ...);
 
 void		ft_flushbuff(t_print *print);
