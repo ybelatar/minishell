@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:14:55 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 09:31:37 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 07:23:36 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	ft_exec_pipe(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 	t_cmd			actual;
 
 	(void)cmd;
+	ft_recexpand(ast, minishell);
 	if (pipe(pipedes))
 	{
 		ft_dprintf(2, "minishell: pipe error");

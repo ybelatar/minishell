@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:16:44 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 09:45:54 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 23:44:09 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	ft_handle_in(t_redir_list *redir)
 {
 	int	fd;
 
-	if ((!(*redir->file) && !ft_strncmp(redir->pre_file, "$", 1)) || !ft_strcmp(redir->pre_file, "*"))
+	if (is_ambiguous(redir))
 	{
 		ft_dprintf(2, "minishell: %s: ambiguous redirect\n", redir->pre_file);
 		return (-1);
@@ -41,7 +41,7 @@ static int	ft_handle_out(t_redir_list *redir)
 {
 	int	fd;
 
-	if ((!(*redir->file) && !ft_strncmp(redir->pre_file, "$", 1)) || !ft_strcmp(redir->pre_file, "*"))
+	if (is_ambiguous(redir))
 	{
 		ft_dprintf(2, "minishell: %s: ambiguous redirect\n", redir->pre_file);
 		return (-1);
@@ -79,7 +79,7 @@ static int	ft_handle_append(t_redir_list *redir)
 {
 	int	fd;
 
-	if ((!(*redir->file) && !ft_strncmp(redir->pre_file, "$", 1)) || !ft_strcmp(redir->pre_file, "*"))
+	if (is_ambiguous(redir))
 	{
 		ft_dprintf(2, "minishell: %s: ambiguous redirect\n", redir->pre_file);
 		return (-1);

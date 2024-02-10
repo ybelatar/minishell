@@ -6,11 +6,16 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 07:01:19 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 08:23:42 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/09 23:43:21 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int is_ambiguous(t_redir_list *redir)
+{
+	return((!redir->file && ft_strchr(redir->pre_file, '*')) || (!(*redir->file) && !ft_strncmp(redir->pre_file, "$", 1)));
+}
 
 int has_wildcard(char *str)
 {

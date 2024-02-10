@@ -6,7 +6,7 @@
 /*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/09 09:53:18 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/10 07:23:56 by ybelatar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ typedef struct s_minishell
 {
 	char				*cmd_line;
 	char				*prompt;
+	// char				*home;
 	t_env				*env;
 	t_pretoken			*pretokens;
 	t_token				*tokens;
@@ -237,6 +238,8 @@ void					expand_env_redir(t_redir_list *redir,
 							t_minishell *minishell);
 void					strip_quotes_redir(t_redir_list *redir);
 void					nullify_status(void);
+int						is_ambiguous(t_redir_list *redir);
+void					ft_recexpand(t_node_ast *node, t_minishell *minishell);
 
 /*Redirections*/
 
