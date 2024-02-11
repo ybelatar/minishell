@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:45:56 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 07:25:40 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 03:33:27 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int	cd(char **args, t_minishell *minishell)
 			update_env("OLDPWD", tmp, minishell);
 			update_env("PWD", getcwd(tmp1, PATH_MAX), minishell);
 			if (ft_write(tmp, ft_strlen(tmp), "cd"))
-				return (125);
+				return (1);
 			if (ft_write("\n", 1, "cd"))
-				return (125);
+				return (1);
 			return (0);
 		}
 		return (ft_dprintf(2, "minishell: cd: OLDPWD not set\n"), 1);

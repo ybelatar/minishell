@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:45:58 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 05:51:01 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 03:33:45 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_write(const char *str, int len, const char *cmd)
 {
 	if (write(1, str, len) < len)
 		return (ft_dprintf(2, "minishell: %s: write error: %s\n",
-				cmd, strerror(errno)), 125);
+				cmd, strerror(errno)), 1);
 	return (0);
 }
 
@@ -52,12 +52,12 @@ int	echo(char **args, t_minishell *minishell)
 	while (args[i])
 	{
 		if (ft_write(args[i], ft_strlen(args[i]), "echo"))
-			return (125);
+			return (1);
 		if (args[i + 1] && ft_write(" ", 1, "echo"))
-			return (125);
+			return (1);
 		i++;
 	}
 	if (!led && ft_write("\n", 1, "echo"))
-		return (125);
+		return (1);
 	return (0);
 }

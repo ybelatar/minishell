@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:07 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 12:52:23 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 03:33:52 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static inline int	display_export(t_minishell *minishell, t_env *env)
 			return (clear_exit(minishell), ft_dprintf(2,
 					"minishell: malloc error\n"), 3);
 		if (ft_write(s, ft_strlen(s), "export"))
-			return (free(s), 125);
+			return (free(s), 1);
 		free(s);
 		index++;
 	}

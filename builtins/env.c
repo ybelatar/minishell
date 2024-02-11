@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:01 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 11:52:54 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 03:33:49 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	env(char **args, t_minishell *minishell)
 			return (clear_exit(minishell), ft_dprintf(2,
 					"minishell: malloc error\n"), 3);
 		if (ft_write(s, ft_strlen(s), "env"))
-			return (free(s), 125);
+			return (free(s), 1);
 		free(s);
 		env = env->next_env;
 	}
