@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 17:03:59 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/10 08:15:43 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:53:10 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	ft_read(t_minishell *minishell, char *limiter, int out)
 		}
 		if (led)
 			s = expand_env_one(s, minishell, 1);
-		ft_dprintf(out, "%s\n", s);
+		if (s)
+			ft_dprintf(out, "%s\n", s);
 		free(s);
 		s = readline("> ");
 	}

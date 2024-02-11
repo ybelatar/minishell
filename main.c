@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 23:06:48 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:48:47 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	minishell = (t_minishell){0, getenv("HOME"), copy_env(env), 0, 0, 0, 0, -1, -1, 0, 0};
+	minishell = (t_minishell){0, copy_env(env), 0, 0, 0, 0, -1, -1, 0, 0};
 	routine(&minishell);
 	return (g_status);
 }

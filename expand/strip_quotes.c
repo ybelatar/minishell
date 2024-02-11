@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 03:51:07 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 02:46:52 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:51:23 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_strlen_wquotes(char *str)
 	return (len);
 }
 
-char	*without_quotes(char *str)
+char	*without_quotes(char *str, int led)
 {
 	char	*res;
 	int		i;
@@ -47,10 +47,11 @@ char	*without_quotes(char *str)
 
 	res = malloc(ft_strlen_wquotes(str) + 1);
 	if (!res)
-    {
-        free(str);
+	{
+		if (led)
+			free(str);
 		return (NULL);
-    }
+	}
 	i = 0;
 	j = 0;
 	while (str[i])
@@ -67,7 +68,8 @@ char	*without_quotes(char *str)
 			res[j++] = str[i++];
 	}
 	res[j] = 0;
-	free(str);
+	if (led)
+		free(str);
 	return (res);
 }
 
@@ -75,7 +77,7 @@ void	strip_quotes_redir(t_redir_list *redir)
 {
 	if (!redir->file)
 		return ;
-	redir->file = without_quotes(redir->file);
+	redir->file = without_quotes(redir->file, 1);
 }
 
 void	strip_quotes(t_node_ast *node)
@@ -85,7 +87,7 @@ void	strip_quotes(t_node_ast *node)
 	i = 0;
 	while (node->args[i])
 	{
-		node->args[i] = without_quotes(node->args[i]);
+		node->args[i] = without_quotes(node->args[i], 1);
 		if (!node->args[i])
 			return ;
 		i++;

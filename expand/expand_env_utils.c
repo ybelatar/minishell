@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_env_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 05:04:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 23:07:06 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:49:29 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ char *expand_tild(char *str, t_minishell *minishell)
 
 	(void)str;
 	res = ft_strdup(get_env("HOME", minishell->env));
-	if (res)
-		return (free(str), res);
-	res = ft_strdup(minishell->home);
 	if (res)
 		return (free(str), res);
 	return (str);
