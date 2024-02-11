@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 07:01:39 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 13:07:04 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/11 05:15:04 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ char	**expanded_wildcard(char *str)
 	entry = readdir(dir);
 	indic = gen_indic(str);
 	if (!indic)
-		return (ft_dprintf(2, "test\n"), NULL);
+		return (closedir(dir), ft_dprintf(2, "test\n"), NULL);
 	while (entry)
 	{
 		if (ft_ismatch(entry->d_name, str, indic))

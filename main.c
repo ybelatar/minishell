@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 03:41:05 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 05:40:51 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,14 @@ void	display_tab(char **tab)
 // 	printf("\n");
 // }
 
-int		g_status;
+int		g_status = 0;
 
 t_env	*new_env(char *key, char *value, int i, int old)
 {
 	t_env	*new;
 
+	if (!key)
+		return (NULL);
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);

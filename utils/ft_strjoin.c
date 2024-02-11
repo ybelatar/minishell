@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:27:01 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 06:03:47 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 05:37:48 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	i = 0;
 	res = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!res)
-		return (NULL);
+		return (free(s1), NULL);
 	while (i < ft_strlen(s1))
 	{
 		res[i] = s1[i];
@@ -85,7 +85,7 @@ char	*ft_strjoin_free2(char *s1, char *s2)
 	i = 0;
 	res = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!res)
-		return (NULL);
+		return (free(s1), free(s2), NULL);
 	while (i < ft_strlen(s1))
 	{
 		res[i] = s1[i];

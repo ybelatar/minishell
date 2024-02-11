@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:30:04 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/05 17:50:11 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 05:35:00 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		return (malloc(1));
 	if (nmemb != nmemb_size / size)
 		return (NULL);
-	res = (void *)malloc(nmemb * size);
+	res = malloc(nmemb * size);
 	if (!res)
 		return (NULL);
 	ft_bzero(res, nmemb * size);

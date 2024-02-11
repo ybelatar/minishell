@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 07:01:19 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 02:16:01 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 05:21:16 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ char	**insert_tab_in_tab(char **args, char **tab, int *i)
 
 	res = malloc(sizeof(char *) * (plen(args) + plen(tab) + 1));
 	if (!res)
-		return (NULL);
+	{
+		*i += 1;
+		return (args);
+	}
 	j = 0;
 	k = 0;
 	l = 0;

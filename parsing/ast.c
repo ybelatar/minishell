@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 21:00:44 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 08:04:44 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/11 05:28:40 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_node_ast	*parse_command(t_minishell *minishell, t_token **token)
 
 	parsed = create_node(T_CMD);
 	if (!parsed)
-		return (perror("Error\n"), NULL);
+		return (ft_dprintf(2, "minishell: malloc error\n"), NULL);
 	while (*token && ((*token)->type == WORD || is_redir(*token)))
 	{
 		if ((*token)->type == WORD)
@@ -58,7 +58,7 @@ t_node_ast	*fuse_node(t_node_type type, t_node_ast *left_node,
 
 	node = ft_calloc(1, sizeof(t_node_ast));
 	if (!node)
-		return (perror("Malloc error"), NULL);
+		return (ft_dprintf(2, "minishell: malloc error"), NULL);
 	node->type = type;
 	node->left_child = left_node;
 	node->right_child = right_node;

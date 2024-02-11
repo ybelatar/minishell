@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 00:50:04 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 05:16:19 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 05:32:57 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_pretoken	*pretokenization(char *str)
 	{
 		if (!match_pretokens(&pretokens, str, &i))
 			return (clear_pretokens(&pretokens), ft_dprintf(2,
-					"Malloc error\n"), NULL);
+					"minishell: malloc error\n"), NULL);
 	}
 	return (pretokens);
 }

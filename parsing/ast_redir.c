@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 21:37:04 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 02:47:16 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 05:28:23 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	add_redir(t_minishell *minishell, t_node_ast *node, t_token **token)
 	move_def_token(token, 1);
 	new = create_redir(minishell, get_redir_type(type), (*token)->content);
 	if (!new)
-		return (perror("Error\n"), 0);
+		return (ft_dprintf(2, "minishell: malloc error\n"), 0);
 	add_last_redir(&(node->redirs), new);
 	move_def_token(token, 1);
 	return (1);
