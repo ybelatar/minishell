@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 03:14:32 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 05:17:50 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 06:12:08 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	skip_quotes(char *str, int *i, char q, int offset)
 {
-	(*i)++;
 	while (str[*i + offset] != q)
 		(*i)++;
 }

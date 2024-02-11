@@ -6,13 +6,14 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 21:00:44 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 05:28:40 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:50:11 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_node_ast	*parse_expression(t_minishell *minishell, t_token **tokens, int min_precedence);
+t_node_ast	*parse_expression(t_minishell *minishell, t_token **tokens,
+				int min_precedence);
 
 t_node_ast	*parse_command(t_minishell *minishell, t_token **token)
 {
@@ -65,7 +66,8 @@ t_node_ast	*fuse_node(t_node_type type, t_node_ast *left_node,
 	return (node);
 }
 
-t_node_ast	*parse_expression(t_minishell *minishell, t_token **tokens, int min_precedence)
+t_node_ast	*parse_expression(t_minishell *minishell, t_token **tokens,
+		int min_precedence)
 {
 	t_node_ast		*left_node;
 	t_node_ast		*right_node;
@@ -81,7 +83,8 @@ t_node_ast	*parse_expression(t_minishell *minishell, t_token **tokens, int min_p
 	{
 		ope_type = (*tokens)->type;
 		move_def_token(tokens, 1);
-		right_node = parse_expression(minishell, tokens, get_precedence(ope_type) + 1);
+		right_node = parse_expression(minishell, tokens,
+				get_precedence(ope_type) + 1);
 		if (!right_node)
 			return (left_node);
 		left_node = fuse_node(get_type(ope_type), left_node, right_node);

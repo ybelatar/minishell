@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 18:53:09 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 10:43:29 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 09:35:46 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ void	ft_putstr(const char *str, t_print *print)
 	const char	*s;
 
 	if (!str)
+	{
 		ft_putstr("(null)", print);
+		return ;
+	}
 	s = str;
 	while (*s)
 	{

@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 03:51:07 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 05:12:56 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 06:30:22 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,13 @@ int	ft_strlen_wquotes(char *str)
 		{
 			c = str[i];
 			i++;
-			while (str[i++] != c)
+			while (str[i] && str[i] != c)
+			{
+				++i;
 				len++;
+			}
+			if (!str[i])
+				break ;
 		}
 		else
 		{
@@ -60,8 +65,10 @@ char	*without_quotes(char *str, int led)
 		{
 			c = str[i];
 			i++;
-			while (str[i] != c)
+			while (str[i] && str[i] != c)
 				res[j++] = str[i++];
+			if (!str[i])
+				break ;
 			i++;
 		}
 		else

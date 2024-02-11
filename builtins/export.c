@@ -6,73 +6,41 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:07 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 05:25:19 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 22:35:05 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static inline int	ft_env_len(t_env *env)
+static inline int	print_export(char *s, int len,
+		t_env **res)
 {
-	int	len;
+	int	index;
 
-	if (!env)
-		return (0);
-	len = 0;
-	while (env)
-	{
-		++len;
-		env = env->next_env;
-	}
-	return (len);
-}
-
-static inline t_env	**ft_sort_env(t_env *env)
-{
-	t_env	**res;
-	t_env	*tmp;
-	int		len;
-	int		index;
-
-	len = ft_env_len(env);
-	res = malloc(len * sizeof(t_env *));
-	if (!res)
-		return (0);
 	index = 0;
 	while (index < len)
 	{
-		res[index++] = env;
-		env = env->next_env;
-	}
-	index = 0;
-	while (index + 1 < len && res[index + 1]->old)
-	{
-		if (ft_strcmp(res[index]->key, res[index + 1]->key) > 0)
+		if (res[index]->unset)
 		{
-			tmp = res[index];
-			res[index] = res[index + 1];
-			res[index + 1] = tmp;
-			index = 0;
+			index++;
 			continue ;
 		}
-		index++;
+		if (res[index]->value)
+			s = ft_mprintf("export %s=\"%s\"\n", res[index]->key,
+					res[index]->value);
+		else
+			s = ft_mprintf("export %s\n", res[index]->key, res[index]->value);
+		if (!s)
+			return (ft_dprintf(2, "minishell: malloc error\n"), 1);
+		if (ft_write(s, ft_strlen(s), "export"))
+			return (free(s), 1);
+		free(s);
+		++index;
 	}
-	while (index + 1 < len)
-	{
-		if (!res[index]->old && ft_strcmp(res[index]->key, res[index + 1]->key) > 0)
-		{
-			tmp = res[index];
-			res[index] = res[index + 1];
-			res[index + 1] = tmp;
-			index = 0;
-			continue ;
-		}
-		index++;
-	}
-	return (res);
+	return (0);
 }
 
-static inline int	display_export(t_minishell *minishell, t_env *env)
+static inline int	display_export(t_env *env)
 {
 	char	*s;
 	t_env	**res;
@@ -86,28 +54,9 @@ static inline int	display_export(t_minishell *minishell, t_env *env)
 		return (1);
 	index = 0;
 	len = ft_env_len(env);
-	while (index < len)
-	{
-		if (res[index]->unset)
-		{
-			index++;
-			continue ;
-		}
-		if (res[index]->value)
-			s = ft_mprintf("export %s=\"%s\"\n", res[index]->key, res[index]->value);
-		else
-			s = ft_mprintf("export %s\n", res[index]->key, res[index]->value);
-		if (!s)
-		{
-			clear_exit(minishell); 
-			ft_dprintf(2, "minishell: malloc error\n");
-			exit(1);
-		}
-		if (ft_write(s, ft_strlen(s), "export"))
-			return (free(s), 1);
-		free(s);
-		index++;
-	}
+	s = 0;
+	if (print_export(s, len, res))
+		return (free(res), 1);
 	free(res);
 	return (0);
 }
@@ -147,7 +96,11 @@ int	export(char **args, t_minishell *minishell)
 	int	ret;
 
 	if (!*args)
-		return (display_export(minishell, minishell->env), 0);
+	{
+		if (display_export(minishell->env))
+			return (1);
+		return (0);
+	}
 	i = 0;
 	ret = 0;
 	while (args[i])

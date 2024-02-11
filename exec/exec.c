@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:14:55 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/11 02:34:13 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:11:41 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static void	ft_exec_cmd(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 		ft_exec_builtin(minishell, ast, cmd, &env);
 	else if (!ft_strcmp("exit", ast->args[0]))
 	{
-		if (cmd->pipe_type)
-			return ;
+		if (!cmd->pipe_type)
+			ft_dprintf(2, "exit\n");
 		ft_exec_builtin(minishell, ast, cmd, &exit_minishell);
 	}
 	else if (!ft_strcmp("export", ast->args[0]))
@@ -46,7 +46,7 @@ static void	ft_exec_cmd(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 static void	ft_exec_pipe(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
 	const t_fct_ptr	exec_fct[4] = {&ft_exec_cmd, &ft_exec_pipe, &ft_exec_or,
-			&ft_exec_and};
+		&ft_exec_and};
 	int				pipedes[2];
 	t_cmd			actual;
 
@@ -70,7 +70,7 @@ static void	ft_exec_pipe(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 static void	ft_exec_or(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
 	const t_fct_ptr	exec_fct[4] = {&ft_exec_cmd, &ft_exec_pipe, &ft_exec_or,
-			&ft_exec_and};
+		&ft_exec_and};
 	t_node_ast		*left;
 	t_node_ast		*right;
 
@@ -87,7 +87,7 @@ static void	ft_exec_or(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 static void	ft_exec_and(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
 	const t_fct_ptr	exec_fct[4] = {&ft_exec_cmd, &ft_exec_pipe, &ft_exec_or,
-			&ft_exec_and};
+		&ft_exec_and};
 	t_node_ast		*left;
 	t_node_ast		*right;
 
@@ -104,7 +104,7 @@ static void	ft_exec_and(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 void	ft_exec(t_minishell *minishell)
 {
 	const t_fct_ptr	exec_fct[4] = {&ft_exec_cmd, &ft_exec_pipe, &ft_exec_or,
-			&ft_exec_and};
+		&ft_exec_and};
 	t_cmd			cmd;
 
 	if (!minishell || !minishell->ast)

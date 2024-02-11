@@ -6,13 +6,13 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 14:56:35 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 05:26:31 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:55:20 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_dprintf.h"
 
-static inline void	ft_parseflag(char c, va_list arg, t_print *print)
+void	ft_parseflag(char c, va_list arg, t_print *print)
 {
 	if (c == 'c')
 		ft_putchar(va_arg(arg, int), print);
@@ -37,25 +37,11 @@ static inline void	ft_parseflag(char c, va_list arg, t_print *print)
 
 char	*ft_mprintf(const char *s, ...)
 {
-	const char	*str;
 	va_list		args;
 	t_print		print;
 
-	str = s;
-	print.type = 2;
-	print.len = 0;
-	print.size = 0;
 	va_start(args, s);
-	while (*str)
-	{
-		if (*str == '%' && *(str + 1) && *(str + 1) != '%')
-			ft_parseflag(*(++str), args, &print);
-		else if (*str == '%' && *(str + 1) == '%')
-			ft_putchar(*(++str), &print);
-		else
-			ft_putchar(*str, &print);
-		++str;
-	}
+	ft_count_chars(&print, s, args);
 	va_end(args);
 	print.type = 3;
 	print.str = malloc(print.size + 1);

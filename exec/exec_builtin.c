@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 02:54:04 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/11 03:44:05 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 22:54:54 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 static inline void	sig_fork(t_cmd *cmd)
 {
+	signal(SIGINT, SIG_IGN);
 	cmd->pid = fork();
 	if (!cmd->pid)
 	{
-		signal(SIGINT, fork_sig_handler);
-		signal(SIGQUIT, fork_sig_handler);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		signal(SIGPIPE, SIG_IGN);
 	}
 }
 
@@ -79,15 +81,11 @@ static inline void	ft_builtin_pipe(t_minishell *minishell, t_node_ast *ast,
 	{
 		clear_pipe(minishell);
 		if (pipedes[0] > 0)
-		{
 			dup2(pipedes[0], 0);
-			ft_close(pipedes[0]);
-		}
 		if (pipedes[1] > 0)
-		{
 			dup2(pipedes[1], 1);
-			ft_close(pipedes[1]);
-		}
+		ft_close(pipedes[0]);
+		ft_close(pipedes[1]);
 		exit(ft_child(minishell, cmd, ast, fct));
 	}
 	if (cmd->pid)
@@ -117,8 +115,7 @@ void	ft_exec_builtin(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd,
 			return ;
 		}
 		g_status = (*fct)(ast->args + 1, minishell);
-		dup2(minishell->in, 0);
-		dup2(minishell->out, 1);
+		(dup2(minishell->in, 0), dup2(minishell->out, 1));
 		ft_close(minishell->in);
 		ft_close(minishell->out);
 		minishell->in = -1;

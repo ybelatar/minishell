@@ -6,11 +6,40 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:23 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 12:03:06 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:47:20 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_env_len(t_env *env)
+{
+	int		index;
+
+	if (!env)
+		return (0);
+	index = 0;
+	while (env)
+	{
+		++index;
+		env = env->next_env;
+	}
+	return (index);
+}
+
+char	*get_env(char *key, t_env *env)
+{
+	t_env	*current;
+
+	current = env;
+	while (current)
+	{
+		if (!ft_strcmp(current->key, key) && !current->unset)
+			return (current->value);
+		current = current->next_env;
+	}
+	return (0);
+}
 
 void	update_env(char *key, char *value, t_minishell *minishell)
 {

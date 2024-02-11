@@ -6,13 +6,13 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:27:01 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 05:37:48 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:47:50 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_strlen(const char *str)
+int	ft_strlen(const char *str)
 {
 	const char	*s;
 

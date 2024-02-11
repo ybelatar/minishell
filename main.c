@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 05:40:51 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:56:12 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,20 @@
 
 // #define COUNT 10
 
-void	display_tab(char **tab)
-{
-	int	i;
+// void	display_tab(char **tab)
+// {
+// 	int	i;
 
-	i = 0;
-	if (!tab)
-		return ;
-	while (tab[i])
-	{
-		ft_dprintf(2, "%s, ", tab[i]);
-		i++;
-	}
-	ft_dprintf(2, "\n");
-}
+// 	i = 0;
+// 	if (!tab)
+// 		return ;
+// 	while (tab[i])
+// 	{
+// 		ft_dprintf(2, "%s, ", tab[i]);
+// 		i++;
+// 	}
+// 	ft_dprintf(2, "\n");
+// }
 
 // void	display_redir(t_redir_list *redirs)
 // {
@@ -160,6 +160,7 @@ int	routine(t_minishell *minishell)
 {
 	while (1)
 	{
+		minishell->stop = 0;
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, SIG_IGN);
 		ft_prompt(minishell);
@@ -172,7 +173,9 @@ int	routine(t_minishell *minishell)
 		free(minishell->cmd_line);
 		minishell->tokens = tokenization(minishell->pretokens);
 		minishell->ast = parser(minishell, minishell->tokens);
-		ft_exec(minishell);
+		get_heredocs(minishell, minishell->ast);
+		if (!minishell->stop)
+			ft_exec(minishell);
 		clear_ast(&(minishell->ast));
 		clear_pid(minishell);
 		clear_pipe(minishell);
@@ -186,7 +189,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	minishell = (t_minishell){0, 0, 0, 0, 0, 0, -1, -1, 0, 0};
+	minishell = (t_minishell){0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0};
 	minishell.env = copy_env(env);
 	cwd[0] = 0;
 	if (getcwd(cwd, PATH_MAX))
@@ -196,4 +199,4 @@ int	main(int ac, char **av, char **env)
 	}
 	routine(&minishell);
 	return (g_status);
-}
+}	

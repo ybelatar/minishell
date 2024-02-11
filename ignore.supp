@@ -5,8 +5,14 @@
     fun:readline
 }
 {
+	leak readline_buffer
+	Memcheck:Leak
+	...
+	fun:readline_internal_char
+}
+{
     leak add_history
-   Memcheck:Leak
+    Memcheck:Leak
     ...
     fun:add_history
 }

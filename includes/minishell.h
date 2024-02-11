@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 02:51:08 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:59:44 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@
 extern int				g_status;
 
 void					sig_handler(int sig);
-void					fork_sig_handler(int sig);
-void					heredoc_sig_handler(int sig);
 
 typedef enum e_pretoken_type
 {
@@ -139,8 +137,9 @@ typedef struct s_pipe_list
 
 typedef struct s_minishell
 {
+	int					stop;
 	char				*cmd_line;
-	//char				*home;
+	char				*expanded;
 	t_env				*env;
 	t_pretoken			*pretokens;
 	t_token				*tokens;
@@ -150,6 +149,7 @@ typedef struct s_minishell
 	int					out;
 	t_pid_list			*pid_list;
 	t_pipe_list			*pipe_list;
+	int					fd;
 }						t_minishell;
 
 typedef struct s_cmd
@@ -168,6 +168,13 @@ typedef struct s_heredoc
 	char				rand[33];
 }						t_heredoc;
 
+// typedef struct s_content
+// {
+// 	char				*s;
+// 	int					alloced;
+// 	struct s_content	*next;
+// }						t_content;
+
 typedef void			(*t_fct_ptr)(t_minishell *, t_node_ast *, t_cmd *);
 
 typedef					int(t_builtin)(char **, t_minishell *);
@@ -183,8 +190,8 @@ void					ft_exec_child(t_minishell *minishell, t_node_ast *ast,
 							t_cmd *cmd);
 int						ft_open_redirs(t_minishell *minishell, t_cmd *cmd,
 							t_redir_list *redirs);
-void					ft_read(t_minishell *minishell, char *limiter,
-							int out);
+int						ft_read(t_minishell *minishell, char *limiter, int out,
+							int in);
 int						ft_read_heredoc(t_minishell *minishell,
 							t_heredoc *heredoc, char *limiter);
 t_pid_list				*add_pid_list(t_minishell *minishell, int pid);
@@ -201,6 +208,7 @@ void					ft_wait(t_minishell *minishell);
 void					clear_exit(t_minishell *minishell);
 void					ft_exec_builtin(t_minishell *minishell, t_node_ast *ast,
 							t_cmd *cmd, t_builtin *fct);
+void					get_heredocs(t_minishell *minishell, t_node_ast *ast);
 
 /*Builtins*/
 int						cd(char **args, t_minishell *minishell);
@@ -211,6 +219,8 @@ int						export(char **args, t_minishell *minishell);
 int						pwd(char **args, t_minishell *minishell);
 int						unset(char **args, t_minishell *minishell);
 int						ft_write(const char *str, int len, const char *cmd);
+int						ft_env_len(t_env *env);
+t_env					**ft_sort_env(t_env *env);
 
 /*Token builders*/
 
@@ -255,10 +265,8 @@ char					*without_quotes(char *str, int led);
 
 int						add_redir(t_minishell *minishell, t_node_ast *node,
 							t_token **token);
-t_redir_list			*create_redir(t_minishell *minishell, t_redir_type type,
-							char *file);
-void					add_last_redir(t_redir_list **redirs,
-							t_redir_list *new);
+t_redir_list			*create_redir(t_redir_type type, char *file);
+void					add_last_redir(t_node_ast *ast, t_redir_list *new);
 
 /*Automata*/
 

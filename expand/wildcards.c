@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 07:01:19 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 05:21:16 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 06:24:13 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ int	has_wildcard(char *str)
 		{
 			c = str[i];
 			i++;
-			while (str[i] != c)
+			while (str[i] && str[i] != c)
 				i++;
+			if (!str[i])
+				break ;
 		}
 		else if (str[i] == '*')
 			return (1);
