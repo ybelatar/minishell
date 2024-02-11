@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 04:55:52 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 23:07:26 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:46:26 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char	*expand_env_one(char *str, t_minishell *minishell, int led)
 
 void	expand_env_redir(t_redir_list *redir, t_minishell *minishell)
 {
+	free(redir->pre_file);
 	redir->pre_file = redir->file;
 	// if (!ft_strcmp(redir->file, "\"\"") || !ft_strcmp(redir->file, "''"))
 	// {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:14:55 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/10 07:29:04 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:34:13 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	ft_exec_cmd(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 static void	ft_exec_pipe(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
 	const t_fct_ptr	exec_fct[4] = {&ft_exec_cmd, &ft_exec_pipe, &ft_exec_or,
-		&ft_exec_and};
+			&ft_exec_and};
 	int				pipedes[2];
 	t_cmd			actual;
 
@@ -54,11 +54,11 @@ static void	ft_exec_pipe(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 	ft_recexpand(ast, minishell);
 	if (pipe(pipedes))
 	{
-		ft_dprintf(2, "minishell: pipe error");
+		ft_dprintf(2, "minishell: pipe error\n");
 		clear_exit(minishell);
+		exit(1);
 	}
-	minishell->pipe_list = add_pipe_list(minishell, pipedes[0],
-			pipedes[1]);
+	minishell->pipe_list = add_pipe_list(minishell, pipedes[0], pipedes[1]);
 	actual = (t_cmd){0, 1, 1, -1};
 	exec_fct[ast->left_child->type](minishell, ast->left_child, &actual);
 	actual.pipe_type = 2;
@@ -70,7 +70,7 @@ static void	ft_exec_pipe(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 static void	ft_exec_or(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
 	const t_fct_ptr	exec_fct[4] = {&ft_exec_cmd, &ft_exec_pipe, &ft_exec_or,
-		&ft_exec_and};
+			&ft_exec_and};
 	t_node_ast		*left;
 	t_node_ast		*right;
 
@@ -87,7 +87,7 @@ static void	ft_exec_or(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 static void	ft_exec_and(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
 	const t_fct_ptr	exec_fct[4] = {&ft_exec_cmd, &ft_exec_pipe, &ft_exec_or,
-		&ft_exec_and};
+			&ft_exec_and};
 	t_node_ast		*left;
 	t_node_ast		*right;
 
@@ -104,7 +104,7 @@ static void	ft_exec_and(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 void	ft_exec(t_minishell *minishell)
 {
 	const t_fct_ptr	exec_fct[4] = {&ft_exec_cmd, &ft_exec_pipe, &ft_exec_or,
-		&ft_exec_and};
+			&ft_exec_and};
 	t_cmd			cmd;
 
 	if (!minishell || !minishell->ast)

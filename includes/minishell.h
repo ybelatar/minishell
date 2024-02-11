@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 23:07:31 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:47:04 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ typedef struct s_pipe_list
 typedef struct s_minishell
 {
 	char				*cmd_line;
-	char				*home;
+	// char				*home;
 	t_env				*env;
 	t_pretoken			*pretokens;
 	t_token				*tokens;

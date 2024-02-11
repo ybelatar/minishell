@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:19:57 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/10 05:19:05 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:21:10 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,13 @@ static inline int	ft_child(t_minishell *minishell, t_cmd *cmd,
 
 	if (ft_open_redirs(minishell, cmd, ast->redirs))
 		return (clear_ast(&minishell->ast), clear_env(minishell->env),
-			clear_pid(minishell), 0);
+			clear_pid(minishell), 1);
 	clear_all_redirs(minishell->ast);
 	env = ft_get_env(minishell);
 	bin = 0;
 	status = 0;
 	if (ast->args && ast->args[0])
 	{
-		execve(ast->args[0], ast->args, env);
 		bin = ft_get_bin(minishell, ast->args[0]);
 		if (bin)
 			execve(bin, ast->args, env);
@@ -104,7 +103,7 @@ static inline void	sig_fork(t_minishell *minishell, int *pipedes,
 		signal(SIGQUIT, fork_sig_handler);
 	}
 	if (cmd->pid < 0)
-		return (ft_dprintf(2, "minishell: fork error"), clear_exit(minishell));
+		return (ft_dprintf(2, "minishell: fork error\n"), clear_exit(minishell));
 	if (!cmd->pid)
 	{
 		clear_pipe(minishell);

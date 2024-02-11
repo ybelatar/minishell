@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 22:10:40 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/09 03:31:36 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:21:22 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_pipe_list	*add_pipe_list(t_minishell *minishell, int in, int out)
 	new = new_pipe_list(in, out);
 	if (!new)
 	{
-		ft_dprintf(2, "minishell: malloc error");
+		ft_dprintf(2, "minishell: malloc error\n");
 		clear_exit(minishell);
 	}
 	if (!minishell || !minishell->pipe_list)

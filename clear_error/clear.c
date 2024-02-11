@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 04:19:55 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 02:44:45 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:06:35 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ void	clear_env(t_env *env)
 	{
 		tmp = env->next_env;
 		free(env->key);
+		env->key = 0;
 		free(env->value);
+		env->value = 0;
 		free(env);
 		env = tmp;
 	}

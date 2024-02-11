@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:16:44 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/10 07:29:00 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:19:34 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,14 @@ static int	ft_handle_in(t_redir_list *redir)
 	int	fd;
 
 	if (is_ambiguous(redir))
-	{
-		ft_dprintf(2, "minishell: %s: ambiguous redirect\n", redir->pre_file);
-		return (-1);
-	}
+		return (ft_dprintf(2, "minishell: %s: ambiguous redirect\n",
+				redir->pre_file), -1);
+	if (!redir->file)
+		return (ft_dprintf(2, "minishell: : No such file or directory\n"), -1);
 	fd = open(redir->file, O_RDONLY);
 	if (fd < 0)
-	{
-		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
-		return (-1);
-	}
+		return (ft_dprintf(2, "minishell: %s: %s\n", redir->file,
+				strerror(errno)), -1);
 	if (dup2(fd, 0) < 0)
 	{
 		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
@@ -42,16 +40,14 @@ static int	ft_handle_out(t_redir_list *redir)
 	int	fd;
 
 	if (is_ambiguous(redir))
-	{
-		ft_dprintf(2, "minishell: %s: ambiguous redirect\n", redir->pre_file);
-		return (-1);
-	}
+		return (ft_dprintf(2, "minishell: %s: ambiguous redirect\n",
+				redir->pre_file), -1);
+	if (!redir->file)
+		return (ft_dprintf(2, "minishell: : No such file or directory\n"), -1);
 	fd = open(redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
-	{
-		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
-		return (-1);
-	}
+		return (ft_dprintf(2, "minishell: %s: %s\n", redir->file,
+				strerror(errno)), -1);
 	if (dup2(fd, 1) < 0)
 	{
 		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
@@ -79,16 +75,14 @@ static int	ft_handle_append(t_redir_list *redir)
 	int	fd;
 
 	if (is_ambiguous(redir))
-	{
-		ft_dprintf(2, "minishell: %s: ambiguous redirect\n", redir->pre_file);
-		return (-1);
-	}
+		return (ft_dprintf(2, "minishell: %s: ambiguous redirect\n",
+				redir->pre_file), -1);
+	if (!redir->file)
+		return (ft_dprintf(2, "minishell: : No such file or directory\n"), -1);
 	fd = open(redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (fd < 0)
-	{
-		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));
-		return (-1);
-	}
+		return (ft_dprintf(2, "minishell: %s: %s\n", redir->file,
+				strerror(errno)), -1);
 	if (dup2(fd, 1) < 0)
 	{
 		ft_dprintf(2, "minishell: %s: %s\n", redir->file, strerror(errno));

@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 02:54:04 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/10 01:57:56 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:21:01 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static inline int	ft_child(t_minishell *minishell, t_cmd *cmd,
 
 	if (ft_open_redirs(minishell, cmd, ast->redirs))
 		return (clear_ast(&minishell->ast), clear_env(minishell->env),
-			clear_pid(minishell), 0);
+			clear_pid(minishell), 1);
 	status = (*fct)(ast->args + 1, minishell);
 	return (clear_ast(&minishell->ast), clear_env(minishell->env),
 		clear_pid(minishell), status);
@@ -74,7 +74,7 @@ static inline void	ft_builtin_pipe(t_minishell *minishell, t_node_ast *ast,
 	ft_handle_pipe(minishell, cmd, pipedes);
 	sig_fork(cmd);
 	if (cmd->pid < 0)
-		return (ft_dprintf(2, "minishell: fork error"), clear_exit(minishell));
+		return (ft_dprintf(2, "minishell: fork error\n"), clear_exit(minishell));
 	else if (!cmd->pid)
 	{
 		clear_pipe(minishell);

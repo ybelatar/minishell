@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:18:02 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/10 12:16:26 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 01:49:45 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ft_free_tab(char **tab)
 {
 	int	i;
 
+	if (!tab)
+		return ;
 	i = 0;
 	while (tab[i])
 		free(tab[i++]);
@@ -77,7 +79,7 @@ char	*ft_get_bin(t_minishell *minishell, char *cmd)
 	int			index;
 
 	if (!ft_strncmp(cmd, "./", 2) || !path_env)
-		return (0);
+		return (ft_strdup(cmd));
 	tab = ft_split(path_env, ':');
 	if (!tab)
 		return (0);

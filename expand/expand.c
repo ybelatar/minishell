@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybelatar <ybelatar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 03:18:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 00:47:48 by ybelatar         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:34:18 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-void ft_expand(t_node_ast *node, t_minishell *minishell)
+void	ft_expand(t_node_ast *node, t_minishell *minishell)
 {
-	t_redir_list *tmp;
-	char **tab;
-	
+	t_redir_list	*tmp;
+	char			**tab;
+
 	if (node->args && node->type == T_CMD && !node->is_expanded)
 	{
 		expand_env(node, minishell);
@@ -33,7 +32,7 @@ void ft_expand(t_node_ast *node, t_minishell *minishell)
 		{
 			expand_env_redir(tmp, minishell);
 			tab = expanded_wildcard(tmp->file);
-			if (plen(tab) > 1)
+			if (!tab || plen(tab) > 1)
 			{
 				clear_tab(tab);
 				free(tmp->file);
@@ -52,7 +51,7 @@ void ft_expand(t_node_ast *node, t_minishell *minishell)
 	node->is_expanded = 1;
 }
 
-void ft_recexpand(t_node_ast *node, t_minishell *minishell)
+void	ft_recexpand(t_node_ast *node, t_minishell *minishell)
 {
 	if (!node)
 		return ;

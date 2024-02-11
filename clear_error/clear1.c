@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:42:39 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/10 02:49:21 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/11 02:06:00 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	clear_ast(t_node_ast **ast)
 	if ((*ast)->type == T_CMD)
 	{
 		clear_tab((*ast)->args);
+		(*ast)->args = 0;
 		clear_redirs(*ast);
+		(*ast)->redirs = 0;
 	}
 	free(*ast);
 	*ast = 0;
