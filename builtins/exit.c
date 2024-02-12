@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:03 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/12 00:40:52 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 02:51:49 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,3 @@ int	exit_minishell(char **args, t_minishell *minishell)
 	clear_exit(minishell);
 	exit(exit_value);
 }
-	

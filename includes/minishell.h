@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/12 00:57:17 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 02:26:43 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,7 @@ char					*expand_tild(char *str, t_minishell *minishell);
 char					*expand_env_one(char *str, t_minishell *minishell,
 							int led);
 char					*without_quotes(char *str, int led);
+void					strip_quotes_tab(char **tab);
 
 /*Redirections*/
 

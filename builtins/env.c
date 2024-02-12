@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:01 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 21:31:32 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 02:29:35 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ int	env(char **args, t_minishell *minishell)
 				exit(1));
 		if (ft_write(s, ft_strlen(s), "env"))
 			return (free(s), 1);
-		free(s);
-		env = env->next_env;
+		(free(s), env = env->next_env);
 	}
 	return (0);
 }

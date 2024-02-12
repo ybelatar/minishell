@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 03:14:32 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/12 01:06:06 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 02:33:38 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	skip_quotes(char *str, int *i, char q, int offset)
 {
 	(*i)++;
-	while (str[*i + offset] != q)
+	while (str[*i + offset] && str[*i + offset] != q)
 		(*i)++;
 }
 
@@ -40,6 +40,8 @@ static int	count_words(char *str, char c)
 			{
 				if (str[i] == '"' || str[i] == '\'')
 					skip_quotes(str, &i, str[i], 0);
+				if (!str[i])
+					return (count);
 				i++;
 			}
 		}
@@ -63,6 +65,8 @@ static char	*get_next_word(char *str, int *ptr, char c)
 	{
 		if (str[*ptr + len_word] == '"' || str[*ptr + len_word] == '\'')
 			skip_quotes(str, &len_word, str[*ptr + len_word], *ptr);
+		if (!str[*ptr + len_word])
+			break ;
 		len_word++;
 	}
 	word = malloc((len_word + 1) * sizeof(char));

@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 02:54:04 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/12 01:07:38 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 02:52:30 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ static inline void	ft_builtin_pipe(t_minishell *minishell, t_node_ast *ast,
 	ft_handle_pipe(minishell, cmd, pipedes);
 	sig_fork(cmd);
 	if (cmd->pid < 0)
-		return (ft_dprintf(2, "minishell: fork error\n"), clear_exit(minishell));
+		return (ft_dprintf(2, "minishell: fork error\n"),
+			clear_exit(minishell));
 	else if (!cmd->pid)
 	{
 		clear_pipe(minishell);
@@ -96,7 +97,7 @@ static inline void	ft_builtin_pipe(t_minishell *minishell, t_node_ast *ast,
 
 void	ft_exec_builtin(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd,
 		t_builtin *fct)
-{	
+{
 	ft_expand(ast, minishell);
 	if (cmd->pipe_type)
 		ft_builtin_pipe(minishell, ast, cmd, fct);
@@ -116,9 +117,8 @@ void	ft_exec_builtin(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd,
 			return ;
 		}
 		g_status = (*fct)(ast->args + 1, minishell);
-		(dup2(minishell->in, 0), dup2(minishell->out, 1));
-		ft_close(minishell->in);
-		ft_close(minishell->out);
+		(dup2(minishell->in, 0), dup2(minishell->out, 1),
+			ft_close(minishell->in), ft_close(minishell->out));
 		minishell->in = -1;
 		minishell->out = -1;
 		minishell->pid_list = add_pid_list(minishell, -1);

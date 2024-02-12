@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 03:51:07 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 06:30:22 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 01:41:12 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,19 @@ char	*without_quotes(char *str, int led)
 	if (led)
 		free(str);
 	return (res);
+}
+
+void	strip_quotes_tab(char **tab)
+{
+	if (!tab)
+		return ;
+	while (*tab)
+	{
+		*tab = without_quotes(*tab, 1);
+		if (!*tab)
+			return ;
+		++tab;
+	}
 }
 
 void	strip_quotes_redir(t_redir_list *redir)

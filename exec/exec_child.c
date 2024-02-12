@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:19:57 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/12 00:49:06 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 02:52:06 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,6 @@ static inline int	ft_handle_err(t_node_ast *ast)
 	struct stat	path_stat;
 
 	stat(ast->args[0], &path_stat);
-	// if ((!ft_strncmp(ast->args[0], "./", 2) || !ft_strncmp(ast->args[0],
-	//			"../",
-	// 			3) || ft_get_last_char(ast->args[0]) == '/')
-	// 	&& access(ast->args[0], F_OK)) return (ft_dprintf(2, "minishell: %s:
-	// 		%s\n", ast->args[0], strerror(errno)), 127);
-	// else if (!access(ast->args[0], F_OK) && (!ft_strncmp(ast->args[0], "./",
-	//			2)
-	// 		|| !ft_strncmp(ast->args[0], "../", 3)
-	// 		|| ft_get_last_char(ast->args[0]) == '/')
-	// 	&& S_ISDIR(path_stat.st_mode)) return (ft_dprintf(2, "minishell: %s:
-	// 		%s\n", ast->args[0], "Is a directory"), 126);
-	// else if ((!ft_strncmp(ast->args[0], "./", 2) || !ft_strncmp(ast->args[0],
-	// 			"../", 3) || ft_get_last_char(ast->args[0]) == '/')
-	// 	&& !access(ast->args[0], F_OK) && access(ast->args[0],
-	// 		X_OK)) return (ft_dprintf(2, "minishell: %s: %s\n", ast->args[0],
-	// 		strerror(errno)), 127);
-	// else if (access(ast->args[0], F_OK) || access(ast->args[0],
-	// 		X_OK)) return (ft_dprintf(2, "minishell: %s: %s\n", ast->args[0],
-	// 		"command not found"), 127);
 	if ((!ft_strncmp(ast->args[0], "./", 2) || !ft_strncmp(ast->args[0], "../",
 				3) || ft_strchr(ast->args[0], '/'))
 		&& access(ast->args[0], F_OK))
