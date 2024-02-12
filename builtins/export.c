@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:46:07 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/12 02:52:41 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 02:59:37 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ int	export(char **args, t_minishell *minishell)
 	ret = 0;
 	while (args[i])
 	{
-		ft_dprintf(2, "%s\n", args[i]);
 		if (export_one(args[i], minishell))
 			ret = 1;
 		i++;

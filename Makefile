@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3 -MMD -MP
 
 INCLUDE_PATH = ./includes/
 
@@ -46,11 +46,13 @@ EXPAND_PATH	=	./expand/
 EXPAND	=	$(EXPAND_PATH)clean_some.c	\
 			$(EXPAND_PATH)expand_env_utils.c	\
 			$(EXPAND_PATH)expand_env.c	\
+			$(EXPAND_PATH)expand_utils.c	\
 			$(EXPAND_PATH)expand.c	\
 			$(EXPAND_PATH)split_no_quotes.c	\
 			$(EXPAND_PATH)strip_quotes.c	\
 			$(EXPAND_PATH)wildcards_utils.c	\
-			$(EXPAND_PATH)wildcards.c
+			$(EXPAND_PATH)wildcards.c	\
+			$(EXPAND_PATH)sort_wildcard.c
 
 FT_DPRINTF_PATH	=	./ft_dprintf/
 
@@ -104,6 +106,8 @@ SRCS	=	main.c $(BUILTINS) $(CLEAR_ERROR) $(EXEC) $(EXPAND) $(FT_DPRINTF) $(PARSI
 
 OBJS	=	${SRCS:.c=.o}
 
+DEPS	=	${SRCS:.c=.d}
+
 all: $(NAME)
 
 $(NAME): $(OBJS) $(INCLUDES)
@@ -122,5 +126,7 @@ fclean: clean
 
 re: fclean 
 	make all
+
+-include $(DEPS)
 
 .PHONY: all clean fclean re bonus

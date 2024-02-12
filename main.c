@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:54:26 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/12 01:28:57 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 05:04:58 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,20 @@
 
 // #define COUNT 10
 
-void	display_tab(char **tab)
-{
-	int	i;
+// void	display_tab(char **tab)
+// {
+// 	int	i;
 
-	i = 0;
-	if (!tab)
-		return ;
-	while (tab[i])
-	{
-		ft_dprintf(2, "%s, ", tab[i]);
-		i++;
-	}
-	ft_dprintf(2, "\n");
-}
+// 	i = 0;
+// 	if (!tab)
+// 		return ;
+// 	while (tab[i])
+// 	{
+// 		ft_dprintf(2, "%s, ", tab[i]);
+// 		i++;
+// 	}
+// 	ft_dprintf(2, "\n");
+// }
 
 // void	display_redir(t_redir_list *redirs)
 // {

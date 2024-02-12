@@ -6,22 +6,11 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 05:04:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/12 01:17:19 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 05:06:53 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char *expand_tild(char *str, t_minishell *minishell)
-{
-	char *res;
-
-	(void)str;
-	res = ft_strdup(get_env("HOME", minishell->env));
-	if (res)
-		return (free(str), res);
-	return (str);
-}
 
 char	*variable_utils(char *str, int *i, t_minishell *minishell)
 {
@@ -36,17 +25,18 @@ char	*variable_utils(char *str, int *i, t_minishell *minishell)
 	value = get_env(name, minishell->env);
 	if (!value)
 		return (free(name), ft_strdup(""));
+	negate_quotes(value);
 	return (free(name), ft_strdup(value));
 }
 
 int	is_last(char *str, int i)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (str[i])
 	{
-		if(str[i] == '"')
+		if (str[i] == '"')
 			count++;
 		i++;
 	}

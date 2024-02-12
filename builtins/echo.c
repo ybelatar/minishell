@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:45:58 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/12 02:30:47 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 04:53:34 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	ft_write(const char *str, int len, const char *cmd)
 {
 	if (write(1, str, len) < len)
-		return (ft_dprintf(2, "minishell: %s: write error: %s\n",
-				cmd, strerror(errno)), 1);
+		return (ft_dprintf(2, "minishell: %s: write error: %s\n", cmd,
+				strerror(errno)), 1);
 	return (0);
 }
 
@@ -25,6 +25,8 @@ static inline int	is_option(const char *arg)
 	if (*arg != '-')
 		return (0);
 	++arg;
+	if (!(*arg))
+		return (0);
 	while (*arg)
 	{
 		if (*arg != 'n')

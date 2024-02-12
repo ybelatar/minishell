@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 06:51:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/12 02:26:43 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 05:17:38 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,7 @@ char					*variable_env(char *str, int *i,
 							t_minishell *minishell);
 char					**expanded_wildcard(char *str);
 void					wildcards(t_node_ast *node);
+int						has_wildcard(char *str);
 char					**insert_tab_in_tab(char **args, char **tab, int *i);
 void					ft_expand(t_node_ast *node, t_minishell *minishell);
 void					expand_env(t_node_ast *node, t_minishell *minishell);
@@ -261,6 +262,9 @@ char					*expand_env_one(char *str, t_minishell *minishell,
 							int led);
 char					*without_quotes(char *str, int led);
 void					strip_quotes_tab(char **tab);
+void					negate_quotes(char *str);
+void					positive(char *str);
+char					**sort_tab(char **tab);
 
 /*Redirections*/
 

@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 04:55:52 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/12 01:11:24 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 05:14:04 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,6 @@ void	expand_env_redir(t_redir_list *redir, t_minishell *minishell)
 {
 	free(redir->pre_file);
 	redir->pre_file = redir->file;
-	// if (!ft_strcmp(redir->file, "\"\"") || !ft_strcmp(redir->file, "''"))
-	// {
-	// 	// free(redir->file);
-	// 	redir->file = 0;
-	// }
-	// else
 	redir->file = expand_env_one(redir->file, minishell, 0);
 }
 

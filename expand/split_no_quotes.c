@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 03:14:32 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/12 02:33:38 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 05:05:19 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,13 @@ static int	count_words(char *str, char c)
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] == c)
-		{
-			while (str[i] == c)
+		if (str[i] == c || str[i] == '\t')
+			while (str[i] == c || str[i] == '\t')
 				i++;
-		}
 		else
 		{
 			count++;
-			while (str[i] && str[i] != c)
+			while (str[i] && str[i] != c && str[i] != '\t')
 			{
 				if (str[i] == '"' || str[i] == '\'')
 					skip_quotes(str, &i, str[i], 0);
@@ -57,11 +55,12 @@ static char	*get_next_word(char *str, int *ptr, char c)
 
 	i = 0;
 	len_word = 0;
-	while (str[*ptr] && str[*ptr] == c)
+	while (str[*ptr] && (str[*ptr] == c || str[*ptr] == '\t'))
 		*ptr = *ptr + 1;
 	if (!str[*ptr])
 		return (NULL);
-	while (str[*ptr + len_word] && str[*ptr + len_word] != c)
+	while (str[*ptr + len_word] && str[*ptr + len_word] != c && str[*ptr
+			+ len_word] != '\t')
 	{
 		if (str[*ptr + len_word] == '"' || str[*ptr + len_word] == '\'')
 			skip_quotes(str, &len_word, str[*ptr + len_word], *ptr);
@@ -69,16 +68,11 @@ static char	*get_next_word(char *str, int *ptr, char c)
 			break ;
 		len_word++;
 	}
-	word = malloc((len_word + 1) * sizeof(char));
+	word = ft_calloc((len_word + 1), sizeof(char));
 	if (!word)
 		return (NULL);
 	while (i < len_word)
-	{
-		word[i] = str[*ptr];
-		i++;
-		*ptr = *ptr + 1;
-	}
-	word[i] = 0;
+		word[i++] = str[(*ptr)++];
 	return (word);
 }
 
@@ -110,7 +104,7 @@ char	**ft_split_no_quotes(char *s, char c)
 
 void	split_no_quotes(t_node_ast *node)
 {
-	int i;
+	int	i;
 
 	if (!node || !node->args)
 		return ;
