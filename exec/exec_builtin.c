@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 02:54:04 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/11 22:54:54 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 01:07:38 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ static inline void	ft_builtin_pipe(t_minishell *minishell, t_node_ast *ast,
 
 void	ft_exec_builtin(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd,
 		t_builtin *fct)
-{
+{	
+	ft_expand(ast, minishell);
 	if (cmd->pipe_type)
 		ft_builtin_pipe(minishell, ast, cmd, fct);
 	else

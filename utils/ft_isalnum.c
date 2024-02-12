@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 02:29:24 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 21:48:02 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 01:27:58 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,4 @@ int	ft_isatoi_utils(int c)
 		|| c == '-')
 		return (1);
 	return (0);
-}
-
-int	ft_isatoi(char *str)
-{
-	size_t	i;
-	int		sign;
-
-	sign = 1;
-	i = 0;
-	if (*str == '-')
-	{
-		sign = -sign;
-		++str;
-	}
-	else if (*str == '+')
-		++str;
-	while (*str >= '0' && *str <= '9')
-	{
-		i = i * 10 + *str - '0';
-		if ((i > LONG_MAX && sign == 1) || (i - 1 > LONG_MAX && sign == -1))
-			return (0);
-		++str;
-	}
-	if (*str)
-		return (0);
-	return (1);
 }

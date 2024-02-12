@@ -6,11 +6,37 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:34:16 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 05:34:10 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 01:26:40 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_isatoi(char *str)
+{
+	size_t	i;
+	int		sign;
+
+	sign = 1;
+	i = 0;
+	if (*str == '-')
+	{
+		sign = -sign;
+		++str;
+	}
+	else if (*str == '+')
+		++str;
+	while (*str >= '0' && *str <= '9')
+	{
+		i = i * 10 + *str - '0';
+		if ((i > LONG_MAX && sign == 1) || (i - 1 > LONG_MAX && sign == -1))
+			return (0);
+		++str;
+	}
+	if (*str)
+		return (0);
+	return (1);
+}
 
 int	ft_atoi(const char *str)
 {

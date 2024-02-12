@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 05:04:50 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 02:49:29 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 01:17:19 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,20 @@ char	*variable_utils(char *str, int *i, t_minishell *minishell)
 	return (free(name), ft_strdup(value));
 }
 
+int	is_last(char *str, int i)
+{
+	int count;
+
+	count = 0;
+	while (str[i])
+	{
+		if(str[i] == '"')
+			count++;
+		i++;
+	}
+	return (count % 2);
+}
+
 char	*variable_env(char *str, int *i, t_minishell *minishell)
 {
 	(*i)++;
@@ -52,7 +66,7 @@ char	*variable_env(char *str, int *i, t_minishell *minishell)
 		(*i)++;
 		return (ft_itoa(g_status));
 	}
-	if (str[*i] == '\'' || str[*i] == '"')
+	if (str[*i] == '\'' || (str[*i] == '"' && !is_last(str, *i)))
 		return (ft_strdup(""));
 	if (!ft_isalpha(str[*i]) && str[*i] != '_')
 		return (ft_strdup("$"));

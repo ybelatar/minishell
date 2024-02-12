@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 04:55:52 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 02:46:26 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 01:11:24 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,20 @@ char	*expand_env_one(char *str, t_minishell *minishell, int led)
 	char	*res;
 	int		i;
 
-    i = 0;
-    res = NULL;
-    while (str[i])
-    {
-        if (str[i] == '\'')
-            res = ft_strjoin_free2(res, single_quote(str, &i));
-        else if (str[i] == '"')
-            res = ft_strjoin_free2(res, double_quote(str, &i, minishell));
-        else if (str[i] == '$')
-            res = ft_strjoin_free2(res, variable_env(str, &i, minishell));
-        else
-            res = ft_strjoin_free2(res, normal(str, &i));
-    }
-	if (!ft_strcmp(str, "~")/* && (get_env("HOME", minishell->env) || getenv("HOME"))*/)
+	i = 0;
+	res = NULL;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			res = ft_strjoin_free2(res, single_quote(str, &i));
+		else if (str[i] == '"')
+			res = ft_strjoin_free2(res, double_quote(str, &i, minishell));
+		else if (str[i] == '$')
+			res = ft_strjoin_free2(res, variable_env(str, &i, minishell));
+		else
+			res = ft_strjoin_free2(res, normal(str, &i));
+	}
+	if (!ft_strcmp(str, "~"))
 		res = expand_tild(res, minishell);
 	if (led)
 		free(str);

@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 03:14:32 by ybelatar          #+#    #+#             */
-/*   Updated: 2024/02/11 06:12:08 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 01:06:06 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	skip_quotes(char *str, int *i, char q, int offset)
 {
+	(*i)++;
 	while (str[*i + offset] != q)
 		(*i)++;
 }
@@ -35,7 +36,7 @@ static int	count_words(char *str, char c)
 		else
 		{
 			count++;
-			while (str[i] != c && str[i])
+			while (str[i] && str[i] != c)
 			{
 				if (str[i] == '"' || str[i] == '\'')
 					skip_quotes(str, &i, str[i], 0);

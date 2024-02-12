@@ -6,7 +6,7 @@
 /*   By: wouhliss <wouhliss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 00:14:55 by wouhliss          #+#    #+#             */
-/*   Updated: 2024/02/11 21:11:41 by wouhliss         ###   ########.fr       */
+/*   Updated: 2024/02/12 00:49:01 by wouhliss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	ft_exec_or(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd);
 
 static void	ft_exec_cmd(t_minishell *minishell, t_node_ast *ast, t_cmd *cmd)
 {
-	ft_expand(ast, minishell);
 	if (!ast->args || !ast->args[0])
 		ft_exec_child(minishell, ast, cmd);
 	else if (!ft_strcmp("cd", ast->args[0]))
